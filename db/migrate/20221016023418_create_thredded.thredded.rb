@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from thredded (originally 20160329231848)
 
 require 'thredded/base_migration'
@@ -68,7 +69,7 @@ class CreateThredded < Thredded::BaseMigration
       t.timestamps null: false
       t.index %i[moderation_state updated_at],
               order: { updated_at: :asc },
-              name:  :index_thredded_posts_for_display
+              name: :index_thredded_posts_for_display
       t.index [:messageboard_id], name: :index_thredded_posts_on_messageboard_id
       t.index [:postable_id], name: :index_thredded_posts_on_postable_id
       t.index %i[postable_id created_at], name: :index_thredded_posts_on_postable_id_and_created_at
@@ -131,7 +132,7 @@ class CreateThredded < Thredded::BaseMigration
       t.timestamps null: false
       t.index %i[moderation_state sticky updated_at],
               order: { sticky: :desc, updated_at: :desc },
-              name:  :index_thredded_topics_for_display
+              name: :index_thredded_topics_for_display
       t.index [:last_post_at], name: :index_thredded_topics_on_last_post_at
       t.index [:hash_id], name: :index_thredded_topics_on_hash_id
       t.index [:slug],
@@ -234,7 +235,7 @@ class CreateThredded < Thredded::BaseMigration
       t.timestamp :created_at, null: false
       t.index %i[messageboard_id created_at],
               order: { created_at: :desc },
-              name:  :index_thredded_moderation_records_for_display
+              name: :index_thredded_moderation_records_for_display
     end
 
     create_table :thredded_notifications_for_private_topics do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -33,9 +35,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   before_validation do
-    self.name = self.email if self.name.blank?
+    self.name = email if name.blank?
   end
 end
