@@ -122,6 +122,4 @@ function App() {
   );
 }
 
-document.addEventListener('DOMContentLoaded', () => { 
-  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-});
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
