@@ -1,6 +1,7 @@
 import './App.css';
 import Dexie from 'dexie'
-import React from 'react';
+import React from 'react'
+import ReactDOM from 'react-dom/client';
 import Stack from './Stack.js'
 import TabPanel from './tabpanel.js'
 import { useLiveQuery } from "dexie-react-hooks";
@@ -68,7 +69,6 @@ const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, qu
 };
 
 function App() {
-
   const tags = [
     { title: "Movies to Watch", category: '' },
     { title: "Bookmarks", category: '', core: true },
@@ -82,46 +82,46 @@ function App() {
 
   return (
     <div>
-      <Navbar className={'flex justify-apart'}>
-        <NavbarGroup>
-          <NavbarHeading>StackBiblio</NavbarHeading>
-          <NavbarDivider />
-          <Button icon="home" text="Home" />
-          <Button icon="document" text="Files" />
-        </NavbarGroup>
-        <NavbarGroup>
-          {/* <CommandPalette
-            hotKeys={'q+w'}
-            commands={commands}
-            trigger={
-              <Button fill={true}>Commands</Button>
-            } /> */}
-        </NavbarGroup>
-      </Navbar>
+    {/* <Navbar className={'flex justify-apart'}>
+    <NavbarGroup>
+      <NavbarHeading>StackBiblio</NavbarHeading>
+      <NavbarDivider />
+      <Button icon="home" text="Home" />
+      <Button icon="document" text="Files" />
+    </NavbarGroup>
+    <NavbarGroup>
+      {<CommandPalette
+        hotKeys={'q+w'}
+        commands={commands}
+        trigger={
+          <Button fill={true}>Commands</Button>
+        } /> }
+    </NavbarGroup>
+  </Navbar> */}
 
-      <div className="tabs">
-        <Card className="tabspanel-card">
-          <TabPanel
-            clearTags={clearTags}
-            entries={allItems}
-            renderSelection={renderSelection}
-            setSelectedTag={setSelectedTag}
-            tags={tags}
-            tagsFilter={tagsFilter}
-          />
-        </Card>
-        <Stack
-          clearTags={clearTags}
-          db={db}
-          entries={allItems}
-          renderSelection={renderSelection}
-          setSelectedTag={setSelectedTag}
-          tags={tags}
-          tagsFilter={tagsFilter}
-        />
-      </div>
+    <div className="tabs">
+      <TabPanel
+        clearTags={clearTags}
+        entries={allItems}
+        renderSelection={renderSelection}
+        setSelectedTag={setSelectedTag}
+        tags={tags}
+        tagsFilter={tagsFilter}
+      />
+      <Stack
+        clearTags={clearTags}
+        db={db}
+        entries={allItems}
+        renderSelection={renderSelection}
+        setSelectedTag={setSelectedTag}
+        tags={tags}
+        tagsFilter={tagsFilter}
+      />
     </div>
+  </div>
   );
 }
 
-export default App;
+document.addEventListener('DOMContentLoaded', () => { 
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
