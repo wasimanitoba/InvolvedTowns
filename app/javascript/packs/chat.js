@@ -23,17 +23,21 @@ class Message extends React.Component {
     return (
       <div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y">
         <div className="message left">
-          <form className={'flex justify-apart'} onSubmit={(event) => {
+          <hr/>
+          <form onSubmit={(event) => {
             event.preventDefault();
             // this.state.db.entries.delete(this.state.id);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()
           }}>
+            <div className="flex justify-apart timestamp">
+              <p>{new Date(this.state.timestamp).toLocaleString()}</p>
+              <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
+            </div>
+            <br/>
             <p>{this.state.value}</p>
-            <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
           </form>
-          <div className="timestamp">{new Date(this.state.timestamp).toLocaleString()}</div>
           <div className="tags">{
             this.state.tags.map((tag) => {
               return (
@@ -121,6 +125,7 @@ class Chat extends React.Component {
         onKeyUp: (keystroke) => { this.handleSubmit(keystroke) }
       }
     ]
+    console.log(this.state.tags)
 
     return (
       <HotkeysTarget2 hotkeys={hotkeys}>
@@ -128,18 +133,18 @@ class Chat extends React.Component {
           <div className="chat-tags message-box">
             <form onSubmit={this.handleSubmit} >
               {/* {({ handleKeyDown, handleKeyUp }) => ( */}
-                {/* <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}> */}
-                  <div className="flex message-input">
-                    <TextArea
-                      growVertically={true}
-                      onChange={this.handleChange}
-                      placeholder="Send yourself a note..."
-                      ref={handleInputRef}
-                      value={this.state.currentValue}
-                    />
-                    <button type="submit" className="message-submit">Send</button>
-                  </div>
-                {/* </div> */}
+              {/* <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}> */}
+              <div className="flex message-input">
+                <TextArea
+                  growVertically={true}
+                  onChange={this.handleChange}
+                  placeholder="Send yourself a note..."
+                  ref={handleInputRef}
+                  value={this.state.currentValue}
+                />
+                <button type="submit" className="message-submit">Send</button>
+              </div>
+              {/* </div> */}
               {/* )} */}
             </form>
             <MultiSelect2

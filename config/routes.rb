@@ -5,8 +5,6 @@ Rails.application.routes.draw do
   mount Thredded::Engine => '/forum'
   resources :users
   get '/library', to: 'stackbiblio#index'
-  get '/stack', to: 'stackbiblio#stack'
-  get '/biblio', to: 'stackbiblio#biblio'
   root to: 'home#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

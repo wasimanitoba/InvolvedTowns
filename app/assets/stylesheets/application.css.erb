@@ -1,0 +1,36 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+* vendor/assets/stylesheets directory can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the bottom of the
+* compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+* files in this directory. Styles in this file should be added after the last require_* statement.
+* It is generally better to create a new file per style scope.
+*
+*= require_tree .
+*= require_self
+*/
+
+<%# html body a, html body li, html body p, a {
+  color: white;  
+}
+
+textarea { 
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; 
+}
+
+input { background: inherit; color: white; }
+
+body a:hover {
+  color: black;
+  background-color: yellow;  
+} %>
+
+<%# 
+.bannerImage { 
+  background-image: url(<%= asset_path 'banner-opaque.png' );
+  background-size: cover;
+} %>
