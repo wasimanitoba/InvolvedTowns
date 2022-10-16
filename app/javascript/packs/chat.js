@@ -33,7 +33,7 @@ class Message extends React.Component {
             <p>{this.state.value}</p>
             <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
           </form>
-          <div className="timestamp">{this.state.timestamp}</div>
+          <div className="timestamp">{new Date(this.state.timestamp).toLocaleString()}</div>
           <div className="tags">{
             this.state.tags.map((tag) => {
               return (
@@ -103,7 +103,7 @@ class Chat extends React.Component {
     const newMessage = {
       content: this.state.currentValue,
       tags: this.state.selectedTags,
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: new Date(),
     };
 
     await this.state.db.entries.add(newMessage);
