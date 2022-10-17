@@ -122,4 +122,10 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+const rootElement = document.getElementById('root')
+if (!rootElement) { document.addEventListener('DOMContentLoaded', ()=>{
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});}
+else {
+    ReactDOM.createRoot(rootElement).render(<App />);
+}
