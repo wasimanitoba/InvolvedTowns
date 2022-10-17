@@ -11,9 +11,13 @@
     <a href="/">InvolvedTowns.com</a>
     <a href="/forum">Forums</a>
     <a href="/users">Users</a>  
+    <%- if current_user %>
+      <%= link_to 'My Profile', user_path(current_user) %>
+    <%- end %>
     <a href="/library">StackBiblio Library</a>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+
     <%= yield %>
   </body>
 </html>
