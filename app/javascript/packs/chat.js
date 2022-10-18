@@ -3,8 +3,8 @@ import { HotkeysTarget2, Icon, TextArea, Tag } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
 const Messages = (props) => {
-  const messages = (props.entries.map(({ id, tags, timestamp, content }) => {
-    return <Message db={props.db} key={id} id={id} tags={tags} timestamp={timestamp} value={content} />
+  const messages = (props.entries.map(({ id, tags, timestamp, content, notes }) => {
+    return <Message db={props.db} key={id} id={id} tags={tags} timestamp={timestamp} value={content} notes={notes} />
   }));
 
   messages.reverse();
@@ -14,28 +14,50 @@ const Messages = (props) => {
 class Message extends React.Component {
   constructor(props) {
     super(props);
-    let { db, id, timestamp, tags, value } = props;
-    this.state = { db, id, timestamp, tags, value, deleted: false };
+    let { db, id, timestamp, tags, value, notes } = props;
+    this.state = { db, id, notes, timestamp, tags, value, deleted: false };
   }
-
+  annotations() {
+    if(!this.state.notes) { return null; }
+    return (
+      <details>
+        <summary>Annotations</summary>
+        {this.state.notes}
+      </details>
+    )
+  }
   render() {
     if (this.state.deleted) { return null; }
     return (
       <div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y">
         <div className="message left">
-          <hr/>
+          <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            // this.state.db.entries.delete(this.state.id);
+            this.state.db.entries.delete(this.state.id);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()
           }}>
             <div className="flex justify-apart timestamp">
               <p>{new Date(this.state.timestamp).toLocaleString()}</p>
-              <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
+              {this.annotations()}
+              <details>
+                <summary>Actions</summary>
+                <table>
+                  <tr>
+                    <td>
+                      <label>Delete</label>
+                    </td>
+                    <td>
+                      <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
+                    </td>
+                  </tr>
+                </table>
+              </details>
             </div>
-            <br/>
+
+            <br />
             <p>{this.state.value}</p>
           </form>
           <div className="tags">{
@@ -125,8 +147,6 @@ class Chat extends React.Component {
         onKeyUp: (keystroke) => { this.handleSubmit(keystroke) }
       }
     ]
-    console.log(this.state.tags)
-
     return (
       <HotkeysTarget2 hotkeys={hotkeys}>
         <div className="message-box chat">

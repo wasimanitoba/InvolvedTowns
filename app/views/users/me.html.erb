@@ -3,9 +3,7 @@
   <strong>Email:</strong>
   <%= @user.email %>
 </p>
-<div data-controller="stackbiblio" data-stackbiblio-user-value="<%= @user&.id %>">
-  <%- posts = Thredded.posts_page_view(scope: @user.thredded_posts.order_newest_first.limit(5), current_user: current_user) %>
-  <%= Thredded::ApplicationController.render(partial: 'thredded/users/posts', locals: { posts: posts })%>
-</div>
+<%- posts = Thredded.posts_page_view(scope: @user.thredded_posts.order_newest_first.limit(5), current_user: current_user) %>
+<%= Thredded::ApplicationController.render(partial: 'thredded/users/posts', locals: { posts: posts })%>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

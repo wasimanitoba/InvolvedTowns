@@ -1,12 +1,17 @@
-<hr>    
+<hr>
 <% post, content = post_and_content if local_assigns.key?(:post_and_content) %>
-<form class="post-actions" data-action="submit->stackbiblio#exportPostFromForumToDB" data-entry="<%= JSON.generate(post.as_json)%>">
+<form data-controller="stackbiblio" 
+        data-stackbiblio-user-value="<%= @user&.id %>" 
+        class="post-actions" 
+        data-action="submit->stackbiblio#exportPostFromForumToDB" 
+        data-entry="<%= JSON.generate(post.as_json)%>">
   <div>
     <details>
       <summary>Add Notes</summary>
-      <textarea name="post-notes" id="<%= "#{dom_id(post)}_notes" %>" cols="70" rows="10"></textarea>
+      <textarea name="post-notes" id="<%= "#{dom_id(post)}_notes" %>" cols="70" rows="5"></textarea>
     </details>
     <input type="text" placeholder="Add a tag">
     <button class="button-like">Save to Library</button>
   </div>
 </form>
+<br>

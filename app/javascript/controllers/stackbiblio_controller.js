@@ -2,7 +2,6 @@ import Dexie from 'dexie'
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['content']
   static values  = { user: String }
 
   connect() {
@@ -22,7 +21,7 @@ export default class extends Controller {
     let tags       = form.querySelector('input').value.split(',').map((tag)=> { 
       return { title: tag.trim(), category: '' } 
     });
-    let notes      = form.querySelector('textarea').value;
+    post.notes     = form.querySelector('textarea').value;
     
     if (post.tags) { post.tags.concat(tags); }
     else           { post.tags = tags; }
