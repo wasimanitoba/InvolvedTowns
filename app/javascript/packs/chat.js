@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from 'react-markdown';
 import { HotkeysTarget2, Icon, TextArea, Tag } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
@@ -18,7 +19,7 @@ class Message extends React.Component {
     this.state = { db, id, notes, timestamp, tags, value, deleted: false };
   }
   annotations() {
-    if(!this.state.notes) { return null; }
+    if (!this.state.notes) { return null; }
     return (
       <details>
         <summary>Annotations</summary>
@@ -45,20 +46,23 @@ class Message extends React.Component {
               <details>
                 <summary>Actions</summary>
                 <table>
-                  <tr>
-                    <td>
-                      <label>Delete</label>
-                    </td>
-                    <td>
-                      <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label>Delete</label>
+                      </td>
+                      <td>
+                        <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
                 </table>
               </details>
             </div>
 
             <br />
-            <p>{this.state.value}</p>
+            <ReactMarkdown>{this.state.value}</ReactMarkdown>
           </form>
           <div className="tags">{
             this.state.tags.map((tag) => {

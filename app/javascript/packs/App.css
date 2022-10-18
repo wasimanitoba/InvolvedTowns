@@ -1,8 +1,3 @@
-@import "@blueprintjs/core/lib/css/blueprint.css";
-/* @import "@blueprintjs/icons/lib/css/blueprint-icons.css"; */
-@import "@blueprintjs/select/lib/css/blueprint-select.css";
-@import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-
 html body .bp4-popover2 a, html body .bp4-popover2 li, html body .bp4-popover2 p, .bp4-popover2 a { color: unset; }
 html body div.bp4-input { background: transparent;}
 
@@ -240,7 +235,7 @@ filter-input input { width: 100% }
 /* .chat form.message-box input { background: inherit; color: unset; } */
 .chat .message-box textarea { 
   background: inherit; 
-  color: white; 
+  /* color: white;  */
   width: 90%;
 }
 .message-box .message-submit {

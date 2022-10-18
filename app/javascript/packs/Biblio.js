@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 class BiblioEntry extends React.Component { 
   constructor(props) {
@@ -10,7 +11,8 @@ class BiblioEntry extends React.Component {
   }
   render() {
     return (
-      <li>{this.state.content} <sub hidden><sup>{this.state.tags.map((tag)=>{return `${tag.title} ${tag.category}`})}</sup></sub></li>
+      <li> <ReactMarkdown>{this.state.content}</ReactMarkdown>
+      <sub hidden><sup>{this.state.tags.map((tag)=>{return `${tag.title} ${tag.category}`})}</sup></sub></li>
     )
   }
 }
