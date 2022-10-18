@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users
   mount Thredded::Engine => '/forum'
   resources :users
-  root to: "home#index"
+  get '/library', to: 'stackbiblio#index'
+  get '/me', to: 'users#me', as: :me
+  root to: 'home#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

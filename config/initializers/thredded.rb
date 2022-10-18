@@ -21,7 +21,7 @@ Thredded.user_name_column = :name
 # the path or url to your user. This lambda is evaluated in the view context.
 # If the lambda returns nil, a span element is returned instead of a link; so
 # setting this to always return nil effectively disables all user links.
-Thredded.user_path = ->(user) {
+Thredded.user_path = lambda { |user|
   user_path = :"#{Thredded.user_class_name.demodulize.underscore}_path"
   main_app.respond_to?(user_path) ? main_app.send(user_path, user) : "/users/#{user.to_param}"
 }
@@ -161,6 +161,13 @@ Thredded.layout = 'thredded/application'
 #     'hi'
 #   end
 # end
+
+Rails.application.config.to_prepare do
+  Thredded.view_hooks.post_common.actions.config.after do |form:, **args|
+    # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
+    render 'thredded/posts_common/actions', post: form.object.post
+  end
+end
 
 # ==> Topic following
 #

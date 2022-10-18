@@ -1,0 +1,313 @@
+html body .bp4-popover2 a, html body .bp4-popover2 li, html body .bp4-popover2 p, .bp4-popover2 a { color: unset; }
+html body div.bp4-input { background: transparent;}
+
+html body div div.bp4-active {
+  background: transparent !important
+}
+
+body div#root div filter-input input { width: 40%; margin: 2%; }
+.stack-biblio  { 
+                display : flex;
+                justify-content: space-around; 
+              }
+
+.sidebar      { width   : 15% ; }
+.tabs         { 
+  width   : 95% ; 
+  height  : 85vh;
+}
+.tabs > div   { width   : 100%; }
+.reading-area { width   : 80%;  }
+.tabs,
+#search-bar input, 
+#chat-input input  {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tabspanel div[role="tablist"] {
+  background-color: #f6fbfa;
+  border-color: #dbdbdb;
+  border-width: 1px;
+  color: #363636;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(.5em - 1px);
+  text-align: center;
+}
+
+/* *{outline: solid rgb(16, 111, 128)} */
+
+filter-input input { width: 100% }
+
+/*   -------------- Section ending at this line taken from  https://codepen.io/supah/ ------------- */
+
+/*-------------------- Chat --------------------*/
+.chat {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+/*-------------------- Chat Title --------------------*/
+.chat-title {
+  flex: 0 1 45px;
+  position: relative;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 10px 10px 50px;
+}
+.chat-title h1, .chat-title h2 {
+  font-weight: normal;
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+}
+.chat-title h2 {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.chat-title .avatar {
+  position: absolute;
+  /* z-index: 1; */
+  top: 8px;
+  left: 9px;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.chat-title .avatar img {
+  width: 100%;
+  height: auto;
+}
+/*-------------------- Messages --------------------*/
+.messages {
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#entries > ul {
+  max-width: 55vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 65vh;
+}
+.messages .message.right { float: right; }
+.messages .message.left  { float: left; width: 100%; }
+.messages .message.left {
+  padding: 6px 10px 7px;
+  border-radius: 10px 10px 10px 0;
+}
+.messages .message.right {
+  padding: 6px 10px 7px;
+  border-radius: 10px 10px 0px 10px;
+}
+.messages .message {
+  clear: both;
+  font-size: 11px;
+  line-height: 1.4;
+  position: relative;
+}
+.messages .message .timestamp {
+  font-size: 9px;
+}
+
+.messages .message.left .avatar  { 
+  left: -35px;
+  bottom: -15px;
+}
+.messages .message.right .avatar { 
+  right: 0px;
+  bottom: -45px;
+}
+.messages .message .avatar {
+  position: absolute;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+}
+.messages .message .avatar img {
+  width: 100%;
+  height: auto;
+}
+.messages .message.message-personal {
+  float: right;
+  text-align: right;
+  background: linear-gradient(120deg, #248a52, #257287);
+  border-radius: 10px 10px 0 10px;
+}
+.messages .message.message-personal::before {
+  left: auto;
+  right: 0;
+  border-right: none;
+  border-left: 5px solid transparent;
+  bottom: -4px;
+}
+.messages .message.new {
+  transform: scale(0);
+  transform-origin: 0 0;
+  animation: bounce 500ms linear both;
+}
+.messages .message.loading::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: '';
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  z-index: 2;
+  margin-top: 4px;
+  animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+  border: none;
+  animation-delay: 0.15s;
+}
+.messages .message.loading span {
+  display: block;
+  font-size: 0;
+  width: 20px;
+  height: 10px;
+  position: relative;
+}
+.messages .message.loading span::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: '';
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  z-index: 2;
+  margin-top: 4px;
+  animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+  margin-left: -7px;
+}
+.messages .message.loading span::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: '';
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  z-index: 2;
+  margin-top: 4px;
+  animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+  margin-left: 7px;
+  animation-delay: 0.3s;
+}
+/*-------------------- Message Box --------------------*/
+.message-box {
+  padding: 10px;
+  position: relative;
+}
+.message-box .message-input > div {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
+.message-box .message-input {
+  justify-content: space-between;
+}
+.tagsHolder, .message-input {
+  margin: 2%;
+}
+.message-box input:focus:-webkit-placeholder {
+  color: transparent;
+}
+/* .chat form.message-box input { background: inherit; color: unset; } */
+.chat .message-box textarea { 
+  background: inherit; 
+  /* color: white;  */
+  width: 90%;
+}
+.message-box .message-submit {
+  font-size: 10px;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 10px;
+  outline: none !important;
+  transition: background 0.2s ease;
+}
+.message-box .message-submit:hover {
+  background: #1d7745;
+}
+/*-------------------- Custom Srollbar --------------------*/
+.mCSB_scrollTools {
+  margin: 1px -3px 1px 0;
+  opacity: 0;
+}
+.mCSB_inside > .mCSB_container {
+  margin-right: 0px;
+  padding: 0 10px;
+}
+/*-------------------- Bounce --------------------*/
+@keyframes bounce {
+  0% {
+    transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  4.7% {
+    transform: matrix3d(0.45, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  9.41% {
+    transform: matrix3d(0.883, 0, 0, 0, 0, 0.883, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  14.11% {
+    transform: matrix3d(1.141, 0, 0, 0, 0, 1.141, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  18.72% {
+    transform: matrix3d(1.212, 0, 0, 0, 0, 1.212, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  24.32% {
+    transform: matrix3d(1.151, 0, 0, 0, 0, 1.151, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  29.93% {
+    transform: matrix3d(1.048, 0, 0, 0, 0, 1.048, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  35.54% {
+    transform: matrix3d(0.979, 0, 0, 0, 0, 0.979, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  41.04% {
+    transform: matrix3d(0.961, 0, 0, 0, 0, 0.961, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  52.15% {
+    transform: matrix3d(0.991, 0, 0, 0, 0, 0.991, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  63.26% {
+    transform: matrix3d(1.007, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  85.49% {
+    transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+  100% {
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+ }
+}
+@keyframes ball {
+  from {
+    transform: translateY(0) scaleY(0.8);
+ }
+  to {
+    transform: translateY(-10px);
+ }
+}
+
+/*   -------------- Section ending at this line taken from https://codepen.io/supah/ ------------- */
