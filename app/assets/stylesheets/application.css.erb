@@ -14,6 +14,12 @@
 *= require_self
 */
 
+.flex { display: flex; }
+
+.justify-apart {
+  justify-content: space-between;
+}
+
 .button-like {
   align-items: center;
   appearance: none;
@@ -78,3 +84,13 @@ body a:hover {
   background-image: url(<%= asset_path 'banner-opaque.png' );
   background-size: cover;
 } %>
+
+
+
+<%# start ------------------------------------ Override Thredded styles %>
+.thredded--main-container { max-width: unset; }
+<%# end   ------------------------------------ Override Thredded styles %>
+
+.hide-actions form.post-actions{ display: none; }
+
+form.post-actions input { line-height: 3em; }

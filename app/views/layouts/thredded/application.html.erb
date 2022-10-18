@@ -4,6 +4,7 @@
     <title>Forum <%= yield :thredded_page_title %></title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <%= stylesheet_link_tag 'thredded', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= csrf_meta_tag %>
     <%= csp_meta_tag %>
     <%= javascript_include_tag 'thredded',
@@ -14,12 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
   <body>
-    <a href="/">InvolvedTowns.com</a>
-    <a href="/forum">Forums</a>
-    <a href="/users">Users</a>
-    <a href="/library">StackBiblio Library</a>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <%= render('layouts/partials/navbar') %> 
     <%= yield %>
   </body>
 </html>

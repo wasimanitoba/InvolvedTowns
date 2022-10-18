@@ -9,7 +9,6 @@ html body div.bp4-input { background: transparent;}
 html body div div.bp4-active {
   background: transparent !important
 }
-.flex { display: flex; }
 
 body div#root div filter-input input { width: 40%; margin: 2%; }
 .stack-biblio  { 
@@ -44,9 +43,7 @@ body div#root div filter-input input { width: 40%; margin: 2%; }
   padding-top: calc(.5em - 1px);
   text-align: center;
 }
-.justify-apart {
-  justify-content: space-between;
-}
+
 /* *{outline: solid rgb(16, 111, 128)} */
 
 filter-input input { width: 100% }

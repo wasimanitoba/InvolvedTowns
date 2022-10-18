@@ -162,6 +162,13 @@ Thredded.layout = 'thredded/application'
 #   end
 # end
 
+Rails.application.config.to_prepare do
+  Thredded.view_hooks.post_common.actions.config.after do |form:, **args|
+    # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
+    render 'thredded/posts_common/actions', post: form.object.post
+  end
+end
+
 # ==> Topic following
 #
 # By default, a user will be subscribed to a topic they've created. Uncomment this to not subscribe them:

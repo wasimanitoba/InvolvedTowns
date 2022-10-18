@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy]
-
+  before_action :set_user, only: %i[show edit update destroy me]
+  before_action :authenticate_user!, only: :me
   # GET /users or /users.json
   def index
     @users = User.all
@@ -48,20 +48,20 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1 or /users/1.json
-  def destroy
-    @user.destroy
+  # def destroy
+  #   @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find(params[:id] || current_user.id)
   end
 
   # Only allow a list of trusted parameters through.

@@ -8,16 +8,10 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
   <body>
-    <a href="/">InvolvedTowns.com</a>
-    <a href="/forum">Forums</a>
-    <a href="/users">Users</a>  
-    <%- if current_user %>
-      <%= link_to 'My Profile', user_path(current_user) %>
-    <%- end %>
-    <a href="/library">StackBiblio Library</a>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
+    <%= render('layouts/partials/navbar') %> 
     <%= yield %>
+    <%- if Rails.env.development? %>
+      <%= console %>
+    <%- end %>
   </body>
 </html>
