@@ -55,13 +55,10 @@ class Message extends React.Component {
                         <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
                       </td>
                     </tr>
-                    
                   </tbody>
                 </table>
               </details>
             </div>
-
-            <br />
             <ReactMarkdown>{this.state.value}</ReactMarkdown>
           </form>
           <div className="tags">{
