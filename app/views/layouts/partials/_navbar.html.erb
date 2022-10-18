@@ -1,15 +1,15 @@
     
 <div class="flex justify-apart">
   <span>
-    <a class="button-like" href="/">InvolvedTowns.com</a>
-    <a class="button-like" href="/forum">Forums</a>
-    <a class="button-like" href="/users">Users</a>
+    <a class="button-like" href="/">InvolvedTowns Forums</a>
+    <a class="button-like" href="/library">My StackBiblio Library</a>
   </span>
-  <span>
+  <span>  
+    <a class="button-like" href="/about">About</a>
+    <a class="button-like" href="/users">Users</a>
     <%- if(current_user) %>
       <%= link_to('Profile', '/me', class: 'button-like') %>
     <%- end %>
-    <a class="button-like" href="/library">My StackBiblio Library</a>
   </span>
 </div>
 <p class="notice"><%= notice %></p>

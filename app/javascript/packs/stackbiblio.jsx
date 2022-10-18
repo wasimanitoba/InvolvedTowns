@@ -108,7 +108,8 @@ function App() {
         tags={tags}
         tagsFilter={tagsFilter}
       />
-      <Stack
+    </div>
+    <Stack
         clearTags={clearTags}
         db={db}
         entries={allItems}
@@ -117,7 +118,6 @@ function App() {
         tags={tags}
         tagsFilter={tagsFilter}
       />
-    </div>
   </div>
   );
 }

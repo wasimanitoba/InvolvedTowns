@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMarkdown from 'react-markdown';
-import { HotkeysTarget2, Icon, TextArea, Tag } from "@blueprintjs/core";
+import { Card, HotkeysTarget2, Icon, TextArea, Tag } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
 const Messages = (props) => {
@@ -140,57 +140,43 @@ class Chat extends React.Component {
   render() {
     const handleInputRef = (el) => (this.inputEl = el);
 
-    const hotkeys = [
-      {
-        combo: "ctrl+enter",
-        global: true,
-        label: "Send the message",
-        onKeyUp: (keystroke) => { this.handleSubmit(keystroke) }
-      }
-    ]
     return (
-      <HotkeysTarget2 hotkeys={hotkeys}>
-        <div className="message-box chat">
-          <div className="chat-tags message-box">
-            <form onSubmit={this.handleSubmit} >
-              {/* {({ handleKeyDown, handleKeyUp }) => ( */}
-              {/* <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}> */}
-              <div className="flex message-input">
-                <TextArea
-                  growVertically={true}
-                  onChange={this.handleChange}
-                  placeholder="Send yourself a note..."
-                  ref={handleInputRef}
-                  value={this.state.currentValue}
-                />
-                <button type="submit" className="message-submit">Send</button>
-              </div>
-              {/* </div> */}
-              {/* )} */}
-            </form>
-            <MultiSelect2
-              className={'tagsHolder'}
-              itemPredicate={this.state.tagsFilter}
-              itemRenderer={this.renderSelection}
-              items={this.state.tags}
-              onItemSelect={this.setSelectedTag}
-              onRemove={(tagToRemove) => {
-                this.setState({ selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove) })
-              }}
-              menuProps={{ "aria-label": "tags" }}
-              placeholder={'All Topics'}
-              resetOnSelect={this.clearTags}
-              selectedItems={this.state.selectedTags}
-              tagRenderer={(item) => { return item.title; }}
-            />
-          </div>
-          <div className="messages">
-            <div id="messages-content" className="messages-content">
-              <Messages db={this.state.db} entries={this.state.entries} />
-            </div>
+      <div className="chat">
+        <div className="messages">
+          <div id="messages-content" className="messages-content">
+            <Messages db={this.state.db} entries={this.state.entries} />
           </div>
         </div>
-      </HotkeysTarget2>
+        <div className="chat-tags message-box">
+          <form onSubmit={this.handleSubmit} >
+            <div className="flex message-input">
+              <TextArea
+                growVertically={true}
+                onChange={this.handleChange}
+                placeholder="Send yourself a note..."
+                ref={handleInputRef}
+                value={this.state.currentValue}
+              />
+              <button type="submit" className="message-submit">Send</button>
+            </div>
+          </form>
+          <MultiSelect2
+            className={'tagsHolder'}
+            itemPredicate={this.state.tagsFilter}
+            itemRenderer={this.renderSelection}
+            items={this.state.tags}
+            onItemSelect={this.setSelectedTag}
+            onRemove={(tagToRemove) => {
+              this.setState({ selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove) })
+            }}
+            menuProps={{ "aria-label": "tags" }}
+            placeholder={'All Topics'}
+            resetOnSelect={this.clearTags}
+            selectedItems={this.state.selectedTags}
+            tagRenderer={(item) => { return item.title; }}
+          />
+        </div>
+      </div>
     )
   }
 }

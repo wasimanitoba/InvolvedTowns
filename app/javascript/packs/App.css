@@ -47,10 +47,14 @@ filter-input input { width: 100% }
 
 /*-------------------- Chat --------------------*/
 .chat {
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+  position: absolute;
+  z-index: 50;
+  right: 2em;
+  bottom: 1em;
+  height: 60vh;
+  width: 25vw;
+  overflow-y: hidden;
+  background: white;
 }
 /*-------------------- Chat Title --------------------*/
 .chat-title {
@@ -88,16 +92,17 @@ filter-input input { width: 100% }
 }
 /*-------------------- Messages --------------------*/
 .messages {
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
   overflow-x: hidden;
   position: relative;
   width: 100%;
+  height: 45vh;
+  overflow-y: scroll;
 }
 
 #entries > ul {
-  max-width: 55vw;
+  /* max-width: 55vw; */
   overflow-x: hidden;
-  overflow-y: scroll;
   max-height: 65vh;
 }
 .messages .message.right { float: right; }
@@ -217,7 +222,9 @@ filter-input input { width: 100% }
 /*-------------------- Message Box --------------------*/
 .message-box {
   padding: 10px;
-  position: relative;
+  /* position: absolute; */
+  /* bottom: 0; */
+  width: 100%;
 }
 .message-box .message-input > div {
   width: -webkit-fill-available;
