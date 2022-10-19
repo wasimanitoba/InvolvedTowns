@@ -22,16 +22,17 @@ class LibraryEntry extends React.Component {
 class Library extends React.Component {
   constructor(props) {
     super(props);
-    const { entries, renderSelection, tags, tagsFilter } = props;
-    this.state           = { entries, selectedTags: [], tags, tagsFilter, };
-    this.renderSelection = renderSelection.bind(this);
-    this.clearTags       = this.clearTags.bind(this);
-    this.setSelectedTag  = this.setSelectedTag.bind(this);
+    const { entries, renderSelection, setSelectedTag, tags, tagsFilter } = props;
+    this.state              = { entries, selectedTags: [], tags, tagsFilter, };
+    this.renderSelection    = renderSelection.bind(this);
+    this.setSelectedTag     = setSelectedTag.bind(this);
+    this.clearTags          = this.clearTags.bind(this);
+    this.setSelectedEntries = this.setSelectedEntries.bind(this);
   }
 
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
-  setSelectedEntry = (event) => {
+  setSelectedEntries = (event) => {
     let selectedEntries  = this.state.entries.filter((entry) => { 
       let titles = entry.tags.map((tag)=> { return tag.title }); 
       return titles.includes(event.title);
@@ -50,7 +51,7 @@ class Library extends React.Component {
           itemPredicate={this.state.tagsFilter}
           itemRenderer={this.renderSelection}
           items={this.state.tags}
-          onItemSelect={this.setSelectedTag}
+          onItemSelect={this.setSelectedEntries}
           onRemove={(tagToRemove) => {
             let tags = this.state.tags;
             this.setState({ 

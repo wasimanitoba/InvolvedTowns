@@ -1,21 +1,11 @@
-import './App.css';
-import Dexie from 'dexie'
-import React from 'react'
-import ReactDOM from 'react-dom/client';
-import Chat from './Chat.js'
-import { HotkeysProvider } from "@blueprintjs/core";
-import Library from './Library.js'
+import { HotkeysProvider, MenuItem } from "@blueprintjs/core";
 import { useLiveQuery } from "dexie-react-hooks";
-import { MenuItem } from "@blueprintjs/core";
-
-const commands = [{
-  name: "Foo",
-  command() { console.log('foo'); }
-}, {
-  name: "Bar",
-  command() { console.log('bar'); }
-}
-];
+import ReactDOM from 'react-dom/client';
+import React from 'react'
+import Library from './Library.js'
+import Dexie from 'dexie'
+import Chat from './Chat.js'
+import './App.css';
 
 const tagsFilter = (query, tag, _index, exactMatch) => {
   const normalizedTitle = tag.title.toLowerCase();
@@ -33,13 +23,13 @@ const clearTags = () => {
 }
 
 const setSelectedTag = (userSelectedTag) => {
-  const selectedTags   = this.state.selectedTags;
+  const selectedTags = this.state.selectedTags;
   const existingTitles = selectedTags.map((entry) => { return entry.title; })
 
   if (!existingTitles.includes(userSelectedTag.title)) {
     selectedTags.push(userSelectedTag);
-    let tags        = this.state.tags;
-    let unselected  = tags.splice(tags.indexOf(userSelectedTag.title), 1);
+    let tags = this.state.tags;
+    let unselected = tags.splice(tags.indexOf(userSelectedTag.title), 1);
     this.setState({ selectedTags: selectedTags, tags: unselected });
   }
   this.render();
@@ -70,61 +60,45 @@ function App() {
   let allItems = useLiveQuery(() => db.entries.toArray(), []);
   if (!allItems) return null;
 
-  let tags = allItems.reduce((accumulator, item)=> { 
-     item.tags.forEach((tag)=> accumulator.add(tag));
-     return accumulator;
-    }, 
-    new Set());
-
-    tags = Array.from(tags);
-
+  let set      = new Set();
+  // TODO: Let's add a separate tag store instead of this
+  allItems.forEach((item)=> { 
+    item.tags.forEach((tag) => { set.add(tag);}); 
+  })
+  let tagArray = Array.from(set);
+  
   return (
     <div>
-    {/* <Navbar className={'flex justify-apart'}>
-    <NavbarGroup>
-      <NavbarHeading>StackBiblio</NavbarHeading>
-      <NavbarDivider />
-      <Button icon="home" text="Home" />
-      <Button icon="document" text="Files" />
-    </NavbarGroup>
-    <NavbarGroup>
-      {<CommandPalette
-        hotKeys={'q+w'}
-        commands={commands}
-        trigger={
-          <Button fill={true}>Commands</Button>
-        } /> }
-    </NavbarGroup>
-  </Navbar> */}
-
-    <div className="tabs">
-      <TabPanel
-        clearTags={clearTags}
-        entries={allItems}
-        renderSelection={renderSelection}
-        setSelectedTag={setSelectedTag}
-        tags={tags}
-        tagsFilter={tagsFilter}
+      <div className="tabs">
+        <Library
+          clearTags={clearTags}
+          entries={allItems}
+          renderSelection={renderSelection}
+          setSelectedTag={setSelectedTag}
+          tags={tagArray}
+          tagsFilter={tagsFilter}
+          />
+      </div>
+      <HotkeysProvider>
+        <Chat
+          db={db}
+          entries={allItems}
+          renderSelection={renderSelection}
+          setSelectedTag={setSelectedTag}
+          tags={tagArray}
+          tagsFilter={tagsFilter}
         />
+      </HotkeysProvider>
     </div>
-
-    <HotkeysProvider>
-     <Chat 
-        db              ={db} 
-        entries         ={entries} 
-        renderSelection ={renderSelection}
-        tags            ={tags} 
-        tagsFilter      ={tagsFilter}
-      />
-    </HotkeysProvider>
-  </div>
   );
 }
 
 const rootElement = document.getElementById('root');
-if (!rootElement) { document.addEventListener('DOMContentLoaded', ()=>{
-  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-});}
+if (!rootElement) {
+  document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  });
+}
 else {
-    ReactDOM.createRoot(rootElement).render(<App />);
+  ReactDOM.createRoot(rootElement).render(<App />);
 }
