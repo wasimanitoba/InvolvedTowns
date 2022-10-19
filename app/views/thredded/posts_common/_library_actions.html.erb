@@ -1,11 +1,10 @@
-<%= yield %>
-<hr>
+
 <% post, content = post_and_content if local_assigns.key?(:post_and_content) %>
-<form data-controller="stackbiblio" 
-        data-stackbiblio-user-value="<%= @user&.id %>" 
-        class="post-actions" 
-        data-action="submit->stackbiblio#exportPostFromForumToDB" 
-        data-entry="<%= JSON.generate(post.as_json)%>">
+<form class="post-actions" 
+      data-action="submit->stackbiblio#exportPostFromForumToDB" 
+      data-controller="stackbiblio" 
+      data-entry="<%= JSON.generate(post.as_json)%>"
+      data-stackbiblio-user-value="<%= @user&.id %>">
   <div>
     <details>
       <summary>Add Notes</summary>
@@ -15,4 +14,4 @@
     <button class="button-like">Save to Library</button>
   </div>
 </form>
-<br>
+<%= yield %>

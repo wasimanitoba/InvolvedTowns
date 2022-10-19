@@ -5,7 +5,7 @@ export default class extends Controller {
   static values  = { user: String }
 
   connect() {
-    this.db = new Dexie('stackbiblio-entries')
+    this.db = new Dexie('stackbiblio-entries-development')
     this.db.version(1).stores({ entries: '++id, content, timestamp' });
   }
 

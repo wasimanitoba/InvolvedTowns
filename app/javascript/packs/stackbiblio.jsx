@@ -2,19 +2,11 @@ import './App.css';
 import Dexie from 'dexie'
 import React from 'react'
 import ReactDOM from 'react-dom/client';
-import Stack from './Stack.js'
-import TabPanel from './tabpanel.js'
+import Chat from './Chat.js'
+import { HotkeysProvider } from "@blueprintjs/core";
+import Library from './Library.js'
 import { useLiveQuery } from "dexie-react-hooks";
-// import CommandPalette from 'react-command-palette';
-import {
-  Button,
-  Card,
-  MenuItem,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading
-} from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/core";
 
 const commands = [{
   name: "Foo",
@@ -32,7 +24,7 @@ const tagsFilter = (query, tag, _index, exactMatch) => {
   if (exactMatch) {
     return normalizedTitle === normalizedQuery;
   } else {
-    return `${tag.rank}. ${normalizedTitle} ${tag.year}`.indexOf(normalizedQuery) >= 0;
+    return `${tag.id || tag.key}. ${normalizedTitle}`.indexOf(normalizedQuery) >= 0;
   }
 };
 
@@ -40,13 +32,17 @@ const clearTags = () => {
   this.setState({ selectedTags: [] })
 }
 
-const setSelectedTag = (event) => {
-  const newArray = this.state.selectedTags;
-  const existingTitles = newArray.map((entry) => { return entry.title; })
-  if (!existingTitles.includes(event.title)) {
-    newArray.push(event);
-    this.setState({ selectedTags: newArray });
+const setSelectedTag = (userSelectedTag) => {
+  const selectedTags   = this.state.selectedTags;
+  const existingTitles = selectedTags.map((entry) => { return entry.title; })
+
+  if (!existingTitles.includes(userSelectedTag.title)) {
+    selectedTags.push(userSelectedTag);
+    let tags        = this.state.tags;
+    let unselected  = tags.splice(tags.indexOf(userSelectedTag.title), 1);
+    this.setState({ selectedTags: selectedTags, tags: unselected });
   }
+  this.render();
 }
 
 const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
@@ -58,27 +54,29 @@ const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, qu
       active={modifiers.active}
       clear={<button>Clear</button>}
       disabled={modifiers.disabled}
-      key={selectedItem.rank}
+      key={selectedItem.id || selectedItem.key}
       label={selectedItem.category.toString()}
       onClick={handleClick}
       onFocus={handleFocus}
       roleStructure="listoption"
-      text={`${selectedItem.rank}. ${selectedItem.title}`}
+      text={selectedItem.title}
     />
   );
 };
 
 function App() {
-  const tags = [
-    { title: "Movies to Watch", category: '' },
-    { title: "Bookmarks", category: '', core: true },
-    { title: "Notes", category: '', core: true },
-  ].map((f, index) => ({ ...f, rank: index + 1 }))
-
-  const db = new Dexie('stackbiblio-entries')
+  const db = new Dexie('stackbiblio-entries-development')
   db.version(1).stores({ entries: '++id, content, timestamp' })
-  const allItems = useLiveQuery(() => db.entries.toArray(), []);
+  let allItems = useLiveQuery(() => db.entries.toArray(), []);
   if (!allItems) return null;
+
+  let tags = allItems.reduce((accumulator, item)=> { 
+     item.tags.forEach((tag)=> accumulator.add(tag));
+     return accumulator;
+    }, 
+    new Set());
+
+    tags = Array.from(tags);
 
   return (
     <div>
@@ -107,22 +105,23 @@ function App() {
         setSelectedTag={setSelectedTag}
         tags={tags}
         tagsFilter={tagsFilter}
-      />
+        />
     </div>
-    <Stack
-        clearTags={clearTags}
-        db={db}
-        entries={allItems}
-        renderSelection={renderSelection}
-        setSelectedTag={setSelectedTag}
-        tags={tags}
-        tagsFilter={tagsFilter}
+
+    <HotkeysProvider>
+     <Chat 
+        db              ={db} 
+        entries         ={entries} 
+        renderSelection ={renderSelection}
+        tags            ={tags} 
+        tagsFilter      ={tagsFilter}
       />
+    </HotkeysProvider>
   </div>
   );
 }
 
-const rootElement = document.getElementById('root')
+const rootElement = document.getElementById('root');
 if (!rootElement) { document.addEventListener('DOMContentLoaded', ()=>{
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 });}
