@@ -22,15 +22,28 @@ class LibraryEntry extends React.Component {
 class Library extends React.Component {
   constructor(props) {
     super(props);
-    const { entries, renderSelection, setSelectedTag, tags, tagsFilter } = props;
-    this.state              = { entries, selectedTags: [], tags, tagsFilter, };
+    const { entries, renderSelection, tags, tagsFilter } = props;
+    this.state              = { entries, selectedTags: [], tags, allTags: tags, tagsFilter, };
     this.renderSelection    = renderSelection.bind(this);
-    this.setSelectedTag     = setSelectedTag.bind(this);
+    this.setSelectedTag     = this.setSelectedTag.bind(this);
     this.clearTags          = this.clearTags.bind(this);
     this.setSelectedEntries = this.setSelectedEntries.bind(this);
   }
 
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
+
+  setSelectedTag = (userSelectedTag) => {
+    const selectedTags   = this.state.selectedTags;
+    const existingTitles = selectedTags.map((entry) => { return entry.title; })
+  
+    if (!existingTitles.includes(userSelectedTag.title)) {
+      selectedTags.push(userSelectedTag);
+      let tags       = this.state.tags;
+      tags.splice(tags.indexOf(userSelectedTag.title), 1);
+      this.setState({ selectedTags: selectedTags, tags: tags });
+    }
+    this.render();
+  }
 
   setSelectedEntries = (event) => {
     let selectedEntries  = this.state.entries.filter((entry) => { 
@@ -56,7 +69,7 @@ class Library extends React.Component {
             let tags = this.state.tags;
             this.setState({ 
               selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
-              tags: tags.concat(tagToRemove)
+              tags: Array.from(new Set(tags.concat(tagToRemove)))
             });
             this.render();
           }}

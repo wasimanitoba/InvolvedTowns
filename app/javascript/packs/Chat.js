@@ -21,8 +21,8 @@ class Chat extends React.Component {
     this.state = { db, entries, currentValue: '', selectedTags: [], tags, allTags: tags, tagsFilter };
     this.handleChange    = this.handleChange.bind(this);
     this.handleSubmit    = this.handleSubmit.bind(this);
+    this.setSelectedTag  = this.setSelectedTag.bind(this);
     this.renderSelection = renderSelection.bind(this);
-    this.setSelectedTag  = setSelectedTag.bind(this);
   }
 
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
@@ -30,6 +30,20 @@ class Chat extends React.Component {
   // Update the state with every keystroke
   handleChange(event) {
     this.setState({ currentValue: event.target.value });
+  }
+
+  setSelectedTag = (userSelectedTag) => {
+    const selectedTags   = this.state.selectedTags;
+    const existingTitles = selectedTags.map((entry) => { return entry.title; })
+
+    if (!existingTitles.includes(userSelectedTag.title)) {
+      selectedTags.push(userSelectedTag);
+      let tags       = this.state.allTags;
+      let spliced = tags.splice(tags.indexOf(userSelectedTag.title), 1);
+      console.log(tags, selectedTags, spliced);
+      this.setState({ selectedTags: selectedTags, tags: tags });
+    }
+    this.render();
   }
 
   // Add the new message to database, update the current state, clear the input and re-render
@@ -98,7 +112,7 @@ class Chat extends React.Component {
               let tags = this.state.tags;
               this.setState({ 
                 selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
-                tags: tags.concat(tagToRemove)
+                tags: Array.from(new Set(tags.concat(tagToRemove)))
               });
               this.render();
             }}
