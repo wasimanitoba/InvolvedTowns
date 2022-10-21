@@ -4,11 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'tags/edit', type: :view do
   before(:each) do
-    @tag = assign(:tag, Tag.create!(
-                          title: 'MyString',
-                          tag: nil,
-                          user: nil
-                        ))
+    user = User.create!(email: 'fake@fake.com', password: 'example', name: 'test user')
+    tag  = Tag.create!(title: 'Title', user: user)
+    @tag = assign(:tag, tag)
   end
 
   it 'renders the edit tag form' do

@@ -4,13 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'tags/show', type: :view do
   before(:each) do
-    tag = Tag.create!(
-      title: 'Title',
-      tag: nil,
-      user: nil
-    )
+    user = User.create!(email: 'fake@fake.com', password: 'example', name: 'test user')
+    tag  = Tag.create!(title: 'Title', user: user)
     @tag = assign(:tag, tag)
   end
+
 
   it 'renders attributes in <p>' do
     render

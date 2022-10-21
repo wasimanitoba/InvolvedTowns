@@ -9,7 +9,7 @@
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  tag_id     :bigint           not null
+#  tag_id     :bigint
 #  user_id    :bigint           not null
 #
 # Indexes
@@ -24,6 +24,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Tag < ApplicationRecord
-  belongs_to :tag
+  # has_many :tag
   belongs_to :user
 end

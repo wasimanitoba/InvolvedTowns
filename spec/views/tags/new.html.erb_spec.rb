@@ -4,11 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'tags/new', type: :view do
   before(:each) do
-    assign(:tag, Tag.new(
-                   title: 'MyString',
-                   tag: nil,
-                   user: nil
-                 ))
+    assign(:tag, Tag.new(title: 'MyString', user: nil))
   end
 
   it 'renders new tag form' do
