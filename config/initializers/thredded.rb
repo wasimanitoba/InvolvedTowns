@@ -163,7 +163,7 @@ Thredded.layout = 'thredded/application'
 # end
 
 Rails.application.config.to_prepare do
-  Thredded.view_hooks.post_common.actions.config.after do |post:, **args|
+  Thredded.view_hooks.post_common.actions.config.after do |post:, **_args|
     # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
     render('thredded/posts_common/library_actions', post: post)
   end
