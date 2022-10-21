@@ -9,7 +9,7 @@
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  tag_id     :bigint           not null
+#  tag_id     :bigint
 #  user_id    :bigint           not null
 #
 # Indexes
