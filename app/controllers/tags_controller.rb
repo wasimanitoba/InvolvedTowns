@@ -13,7 +13,9 @@ class TagsController < ApplicationController
 
   # GET /tags/new
   def new
-    @tag = Tag.new
+    authenticate_user!
+    @user = User.find(params[:user_id] || current_user.id)
+    @tag  = Tag.new
   end
 
   # GET /tags/1/edit
@@ -61,11 +63,11 @@ class TagsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_tag
-    @tag = Tag.find(params[:id])
+    @tag  = Tag.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def tag_params
-    params.require(:tag).permit(:title, :tag_id, :user_id)
+    params.require(:tag).permit(:id, :title, :tag_id, :user_id)
   end
 end

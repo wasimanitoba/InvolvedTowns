@@ -40,7 +40,7 @@ class Message extends React.Component {
             this.setState({ deleted: true })
             this.render()
           }}>
-            <div className="flex justify-apart timestamp">
+            <div className="timestamp">
               <p>{new Date(this.state.timestamp).toLocaleString()}</p>
               {this.annotations()}
               <details>

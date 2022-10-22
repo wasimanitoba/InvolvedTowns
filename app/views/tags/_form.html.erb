@@ -21,9 +21,9 @@
     <%= form.text_field :tag_id %>
   </div>
 
-  <div class="field">
+  <div class="field" style="display:none">
     <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
+    <%= form.text_field :user_id, value: @user&.id %>
   </div>
 
   <div class="actions">
