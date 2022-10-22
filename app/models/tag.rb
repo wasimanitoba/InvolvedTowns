@@ -6,7 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  path       :ltree
-#  title      :string
+#  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  tag_id     :bigint
@@ -26,4 +26,5 @@
 class Tag < ApplicationRecord
   # has_many :tag
   belongs_to :user
+  validates :title, presence: true
 end

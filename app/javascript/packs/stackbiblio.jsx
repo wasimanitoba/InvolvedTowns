@@ -1,11 +1,10 @@
-import { HotkeysProvider, MenuItem } from "@blueprintjs/core";
+import { HotkeysProvider, Icon, MenuItem } from "@blueprintjs/core";
 import { useLiveQuery } from "dexie-react-hooks";
 import ReactDOM from 'react-dom/client';
 import React from 'react'
 import Library from './Library.js'
 import Dexie from 'dexie'
 import Chat from './Chat.js'
-import './App.css';
 
 const tagsFilter = (query, tag, _index, exactMatch) => {
   const normalizedTitle = tag.title.toLowerCase();
@@ -50,30 +49,33 @@ function App() {
   db.version(1).stores({ entries: '++id, content, timestamp' })
   let allItems = useLiveQuery(() => db.entries.toArray(), []);
   if (!allItems) return null;
-  let accumulator = new Set();
+
+  let titles = new Set();
+  let tagArray = [];
   // TODO: Let's add a separate tag store instead of this
-  let set         = allItems.reduce(reduceTags, accumulator)
-  let tagArray    = Array.from(set);
-  
+  allItems.forEach((item) => {
+    item.tags.forEach((tag) => {
+      if (!titles.has(tag.title)) {
+        tagArray.push(tag);
+        titles.add(tag.title);
+      }
+    });
+  })
+
   return (
     <div>
-      <div className="tabs">
-        <Library
-          clearTags={clearTags}
-          entries={allItems}
-          renderSelection={renderSelection}
-          tags={tagArray}
-          tagsFilter={tagsFilter}
-          />
-      </div>
+      <Library
+        clearTags={clearTags}
+        entries={allItems}
+        renderSelection={renderSelection}
+        tags={tagArray}
+        tagsFilter={tagsFilter}
+      />
       <HotkeysProvider>
-        <Chat
-          db={db}
-          entries={allItems}
-          renderSelection={renderSelection}
-          tags={tagArray}
-          tagsFilter={tagsFilter}
-        />
+        <details className={'chat-toggle'}>
+          <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
+          <Chat db={db} entries={allItems} renderSelection={renderSelection} tags={tagArray} tagsFilter={tagsFilter} />
+        </details>
       </HotkeysProvider>
     </div>
   );

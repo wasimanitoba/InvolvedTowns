@@ -17,14 +17,26 @@ const renderCreateNewMenuItem = (query, active, handleClick) => (
 class Chat extends React.Component {
   constructor(props) {
     super(props);
-    const { db, entries, renderSelection, setSelectedTag, tags, tagsFilter } = props;
+    const { db, entries, renderSelection, tags, tagsFilter } = props;
     this.state = { db, entries, currentValue: '', selectedTags: [], tags, allTags: tags, tagsFilter };
     this.handleChange    = this.handleChange.bind(this);
     this.handleSubmit    = this.handleSubmit.bind(this);
     this.setSelectedTag  = this.setSelectedTag.bind(this);
     this.renderSelection = renderSelection.bind(this);
   }
-
+  
+  setSelectedTag = (userSelectedTag) => {
+    const selectedTags = this.state.selectedTags;
+    const existingTitles = selectedTags.map((entry) => { return entry.title; })
+  
+    if (!existingTitles.includes(userSelectedTag.title)) {
+      selectedTags.push(userSelectedTag);
+      let tags = this.state.tags;
+      let unselected = tags.splice(tags.indexOf(userSelectedTag.title), 1);
+      this.setState({ selectedTags: selectedTags, tags: unselected });
+    }
+    this.render();
+  }
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
   // Update the state with every keystroke
@@ -89,7 +101,6 @@ class Chat extends React.Component {
           <form onSubmit={this.handleSubmit} >
             <div className="flex message-input">
               <TextArea
-                growVertically={true}
                 onChange={this.handleChange}
                 placeholder="Send yourself a note..."
                 ref={handleInputRef}
