@@ -18,9 +18,9 @@
         <td><%= tag.title %></td>
         <td><%= tag.tag_id %></td>
         <td><%= tag.user_id %></td>
-        <td><%= link_to 'Show', tag %></td>
-        <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
-        <td><%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', user_tag_path(tag, tag.user_id) %></td>
+        <td><%= link_to 'Edit', edit_user_tag_path(tag, tag.user_id) %></td>
+        <td><%= link_to 'Destroy', user_tag_path(tag, tag.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Tag', new_user_tag_path %>
+<%= link_to 'New Tag', new_user_tag_path(tag.user_id) %>
