@@ -1,7 +1,67 @@
+import Dexie from 'dexie';
 import React from 'react';
-import { MultiSelect2 } from "@blueprintjs/select";
-import '@github/filter-input-element';
+import ReactDOM from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
+import '@github/filter-input-element';
+import { MenuItem } from "@blueprintjs/core";
+import { MultiSelect2 } from "@blueprintjs/select";
+import { useLiveQuery } from "dexie-react-hooks";
+
+const tagsFilter = (query, tag, _index, exactMatch) => {
+  const normalizedTitle = tag.title.toLowerCase();
+  const normalizedQuery = query.toLowerCase();
+
+  if (exactMatch) {
+    return normalizedTitle === normalizedQuery;
+  } else {
+    return `${tag.id || tag.key}. ${normalizedTitle}`.indexOf(normalizedQuery) >= 0;
+  }
+};
+
+const clearTags = () => {
+  this.setState({ selectedTags: [] })
+}
+
+const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
+  if (!modifiers.matchesPredicate) {
+    return null;
+  }
+  return (
+    <MenuItem
+      active={modifiers.active}
+      clear={<button>Clear</button>}
+      disabled={modifiers.disabled}
+      key={selectedItem.id || selectedItem.key}
+      label={selectedItem.category.toString()}
+      onClick={handleClick}
+      onFocus={handleFocus}
+      roleStructure="listoption"
+      text={selectedItem.title}
+    />
+  );
+};
+
+
+function StackBiblio() {
+  const db = new Dexie('stackbiblio-entries-development')
+  db.version(1).stores({ entries: '++id, content, timestamp' })
+  let allItems = useLiveQuery(() => db.entries.toArray(), []);
+  if (!allItems) return null;
+
+  let titles = new Set();
+  let tagArray = [];
+  // TODO: Let's add a separate tag store instead of this
+  allItems.forEach((item) => {
+    item.tags.forEach((tag) => {
+      if (!titles.has(tag.title)) {
+        tagArray.push(tag);
+        titles.add(tag.title);
+      }
+    });
+  })
+
+  return (<Library clearTags={clearTags} entries={allItems} renderSelection={renderSelection} tags={tagArray} tagsFilter={tagsFilter} />);
+}
 
 class LibraryEntry extends React.Component {
   constructor(props) {
@@ -81,7 +141,7 @@ class Library extends React.Component {
             tagRenderer={(item) => { return (item.title); }}
           />
         </filter-input>
-        <ul data-filter-list>
+        <ul id="entries" data-filter-list>
           {this.state.entries.map((entry) => {
             return <LibraryEntry entry={entry} key={entry.id} />
           })}
@@ -93,4 +153,12 @@ class Library extends React.Component {
 
 
 
-export default Library;
+const rootElement = document.getElementById('library');
+if (!rootElement) {
+  document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.createRoot(document.getElementById('library')).render(<StackBiblio />);
+  });
+}
+else {
+  ReactDOM.createRoot(rootElement).render(<StackBiblio />);
+}

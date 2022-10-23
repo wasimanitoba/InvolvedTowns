@@ -2,7 +2,6 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Icon, Tag } from "@blueprintjs/core";
 
-
 const Messages = (props) => {
   const messages = (props.entries.map(({ id, tags, timestamp, content, notes }) => {
     return <Message db={props.db} key={id} id={id} tags={tags} timestamp={timestamp} value={content} notes={notes} />
