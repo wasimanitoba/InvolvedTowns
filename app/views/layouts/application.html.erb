@@ -16,6 +16,7 @@
   <body>
     <%= render('layouts/partials/navbar') %> 
     <%= yield %>
-
+    <%= javascript_packs_with_chunks_tag('chat') %>     <%# This has to be in the body instead of the head? %>
+    <div id="react-chat-container"></div>
   </body>
 </html>

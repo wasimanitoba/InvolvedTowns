@@ -1,7 +1,68 @@
-import Messages from "./Messages";
+import Dexie from 'dexie';
 import React from "react";
-import { MenuItem, TextArea } from "@blueprintjs/core";
+import ReactDOM from 'react-dom/client';
+import Messages from "./Messages";
+import { HotkeysProvider, Icon, MenuItem, TextArea } from "@blueprintjs/core";
+import { useLiveQuery } from "dexie-react-hooks";
 import { MultiSelect2 } from "@blueprintjs/select";
+
+const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
+  if (!modifiers.matchesPredicate) {
+    return null;
+  }
+  return (
+    <MenuItem
+      active={modifiers.active}
+      clear={<button>Clear</button>}
+      disabled={modifiers.disabled}
+      key={selectedItem.id || selectedItem.key}
+      label={selectedItem.category.toString()}
+      onClick={handleClick}
+      onFocus={handleFocus}
+      roleStructure="listoption"
+      text={selectedItem.title}
+    />
+  );
+};
+
+const tagsFilter = (query, tag, _index, exactMatch) => {
+  const normalizedTitle = tag.title.toLowerCase();
+  const normalizedQuery = query.toLowerCase();
+
+  if (exactMatch) {
+    return normalizedTitle === normalizedQuery;
+  } else {
+    return `${tag.id || tag.key}. ${normalizedTitle}`.indexOf(normalizedQuery) >= 0;
+  }
+};
+
+function Stack() {
+  const db = new Dexie('stackbiblio-entries-development')
+  db.version(1).stores({ entries: '++id, content, timestamp' })
+  let allItems = useLiveQuery(() => db.entries.toArray(), []);
+  if (!allItems) return null;
+
+  let titles = new Set();
+  let tagArray = [];
+  // TODO: Let's add a separate tag store instead of this
+  allItems.forEach((item) => {
+    item.tags.forEach((tag) => {
+      if (!titles.has(tag.title)) {
+        tagArray.push(tag);
+        titles.add(tag.title);
+      }
+    });
+  })
+
+  return (
+    <HotkeysProvider>
+      <details className={'chat-toggle'}>
+        <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
+        <Chat db={db} entries={allItems} renderSelection={renderSelection} tags={tagArray} tagsFilter={tagsFilter} />
+      </details>
+    </HotkeysProvider>
+  );
+}
 
 const renderCreateNewMenuItem = (query, active, handleClick) => (
   <MenuItem
@@ -139,4 +200,14 @@ class Chat extends React.Component {
   }
 }
 
-export default Chat
+
+const rootElement = document.getElementById('react-chat-container');
+if (!rootElement) {
+  document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.createRoot(document.getElementById('react-chat-container')).render(<Stack />);
+  });
+}
+else {
+  ReactDOM.createRoot(rootElement).render(<Stack />);
+}
+
