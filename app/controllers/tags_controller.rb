@@ -2,6 +2,7 @@
 
 class TagsController < ApplicationController
   before_action :set_tag, only: %i[show edit update destroy]
+  before_action :authenticate_user!, only: %i[new edit]
 
   # GET /tags or /tags.json
   def index
@@ -13,9 +14,9 @@ class TagsController < ApplicationController
 
   # GET /tags/new
   def new
-    authenticate_user!
-    @user = User.find(params[:user_id] || current_user.id)
-    @tag  = Tag.new
+    @user        = User.find(params[:user_id] || current_user.id)
+    @tag         = Tag.new
+    @tag.user_id = @user.id
   end
 
   # GET /tags/1/edit
@@ -27,7 +28,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.save
-        format.html { redirect_to tag_url(@tag), notice: 'Tag was successfully created.' }
+        format.html { redirect_to user_tag_url(@tag, @tag.user_id), notice: 'Tag was successfully created.' }
         format.json { render :show, status: :created, location: @tag }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -54,7 +55,7 @@ class TagsController < ApplicationController
     @tag.destroy
 
     respond_to do |format|
-      format.html { redirect_to tags_url, notice: 'Tag was successfully destroyed.' }
+      format.html { redirect_to user_tags_url(@tag.user_id), notice: 'Tag was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

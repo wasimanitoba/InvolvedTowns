@@ -15,41 +15,38 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe '/tags', type: :request do
-  include Devise::Test::IntegrationHelpers
-
   # This should return the minimal set of attributes required to create a valid
   # Tag. As you add validations to Tag, be sure to
   # adjust the attributes here as well.
 
-  let(:user) { User.create!(email: 'fake@fake.com', password: 'example', name: 'test user') }
+  let(:user) { User.create!(email: 'fake2@fake.com', password: 'example', name: 'test user') }
   let(:valid_attributes) { { user_id: user.id, title: 'TagName' } }
 
   let(:invalid_attributes) { { title: nil, user_id: user.id } }
 
+  before do
+    sign_in user
+  end
+
   describe 'GET /index' do
     it 'renders a successful response' do
       Tag.create! valid_attributes
-      get tags_url
+      get user_tags_url(user)
       expect(response).to be_successful
     end
   end
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      tag = Tag.create! valid_attributes
-      get tag_url(tag)
+      tag = Tag.create!(user: user, title: 'test')
+      get user_tag_url(tag.user_id, tag.id)
       expect(response).to be_successful
     end
   end
 
   describe 'GET /new' do
-    before do
-      user = User.create!(password: 'fakepassword', email: 'fake@fake.com', name: 'fake name')
-      sign_in user
-    end
-
     it 'renders a successful response' do
-      get new_tag_url
+      get new_user_tag_url(user)
       expect(response).to be_successful
     end
   end
@@ -57,7 +54,7 @@ RSpec.describe '/tags', type: :request do
   describe 'GET /edit' do
     it 'renders a successful response' do
       tag = Tag.create! valid_attributes
-      get edit_tag_url(tag)
+      get edit_user_tag_url(user, tag)
       expect(response).to be_successful
     end
   end
@@ -66,20 +63,20 @@ RSpec.describe '/tags', type: :request do
     context 'with valid parameters' do
       it 'creates a new Tag' do
         expect do
-          post tags_url, params: { tag: valid_attributes }
+          post user_tags_url(user), params: { tag: valid_attributes }
         end.to change(Tag, :count).by(1)
       end
 
       it 'redirects to the created tag' do
-        post tags_url, params: { tag: valid_attributes }
-        expect(response).to redirect_to(tag_url(Tag.last))
+        post user_tags_url(user), params: { tag: valid_attributes }
+        expect(response).to redirect_to(user_tag_url(Tag.last, user))
       end
     end
 
     context 'with invalid parameters' do
       it 'does not create a new Tag' do
         expect do
-          post tags_url, params: { tag: invalid_attributes }
+          post user_tags_url(user), params: { tag: invalid_attributes }
         end.to change(Tag, :count).by(0)
       end
 
@@ -98,16 +95,16 @@ RSpec.describe '/tags', type: :request do
 
       it 'updates the requested tag' do
         tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
+        patch user_tag_url(tag, user), params: { tag: new_attributes }
         tag.reload
         skip('Add assertions for updated state')
       end
 
       it 'redirects to the tag' do
         tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
+        patch user_tag_url(tag, user), params: { tag: new_attributes }
         tag.reload
-        expect(response).to redirect_to(tag_url(tag))
+        expect(response).to redirect_to(user_tag_url(tag))
       end
     end
 
@@ -124,14 +121,14 @@ RSpec.describe '/tags', type: :request do
     it 'destroys the requested tag' do
       tag = Tag.create! valid_attributes
       expect do
-        delete tag_url(tag)
+        delete user_tag_url(user, tag)
       end.to change(Tag, :count).by(-1)
     end
 
     it 'redirects to the tags list' do
       tag = Tag.create! valid_attributes
-      delete tag_url(tag)
-      expect(response).to redirect_to(tags_url)
+      delete user_tag_url(user, tag)
+      expect(response).to redirect_to(user_tags_url(user))
     end
   end
 end

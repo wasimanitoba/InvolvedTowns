@@ -3,9 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe TagsController, type: :routing do
-  describe 'routing' do
+  pending 'routing' do
+    before do
+      user = User.create!(password: 'fakepassword', email: 'fake@fake.com', name: 'fake name')
+      sign_in user
+    end
+
     it 'routes to #index' do
-      expect(get: '/tags').to route_to('tags#index')
+      expect(get: 'tags').to route_to('tags#index')
     end
 
     it 'routes to #new' do

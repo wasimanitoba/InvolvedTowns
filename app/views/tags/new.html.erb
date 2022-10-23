@@ -2,4 +2,4 @@
 
 <%= render 'form', tag: @tag %>
 
-<%= link_to 'Back', user_tags_path %>
+<%= link_to 'Back', user_tags_path(user_id: @tag.user_id) %>
