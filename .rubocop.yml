@@ -1,3 +1,5 @@
 require: rubocop-rails
 Metrics/BlockLength:
   Enabled: false
+Documentation:
+  Enabled: false

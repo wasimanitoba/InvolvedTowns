@@ -9,7 +9,7 @@
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  tag_id     :bigint
+#  tag_id     :bigint                                  # i should drop this column?
 #  user_id    :bigint           not null
 #
 # Indexes
@@ -24,7 +24,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Tag < ApplicationRecord
-  # has_many :tag
   belongs_to :user
   validates :title, presence: true
 end

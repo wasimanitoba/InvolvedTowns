@@ -28,4 +28,6 @@
 
 <br>
 
-<%= link_to 'New Tag', new_user_tag_path(tag.user_id) %>
+
+<%# @tags.last.user_id is here just for testing purposes because i haven't set up current_user in this spot yet %>
+<%= link_to 'New Tag', new_user_tag_path(user_id: current_user || @tags.last.user_id) %> 
