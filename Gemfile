@@ -52,4 +52,5 @@ gem 'rubocop-rails', '~> 2.16'
 gem 'thredded', '~> 1.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
+gem 'linked_rails'
 gem 'pg_ltree'

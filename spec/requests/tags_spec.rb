@@ -81,7 +81,7 @@ RSpec.describe '/tags', type: :request do
       end
 
       pending "renders a successful response (i.e. to display the 'new' template)" do
-        post tags_url, params: { tag: invalid_attributes }
+        post user_tags_url(user), params: { tag: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -109,9 +109,12 @@ RSpec.describe '/tags', type: :request do
     end
 
     context 'with invalid parameters' do
+      before do
+        sign_in user
+      end
       pending "renders a successful response (i.e. to display the 'edit' template)" do
         tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: invalid_attributes }
+        patch user_tag_url(id: tag, user_id: tag.user_id), params: { tag: invalid_attributes }
         expect(response).to be_successful
       end
     end
