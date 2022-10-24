@@ -70,4 +70,6 @@ RSpec.configure do |config|
   # Integration tests
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :routing
+
+  config.example_status_persistence_file_path = 'spec/examples.txt'
 end
