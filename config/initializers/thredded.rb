@@ -53,7 +53,7 @@ Thredded.content_visible_while_pending_moderation = true
 # :position            (default) set the position manually (new messageboards go to the bottom, by creation timestamp)
 # :last_post_at_desc   most recent post first
 # :topics_count_desc   most topics first
-Thredded.messageboards_order = :position
+Thredded.messageboards_order = :topics_count_desc
 
 # Whether admin users see button to delete entire messageboards on the messageboard edit page.
 Thredded.show_messageboard_delete_button = false
@@ -65,7 +65,7 @@ Thredded.show_messageboard_group_page = true
 Thredded.show_topic_followers = false
 
 # Whether the list of users who are currently online is displayed.
-Thredded.currently_online_enabled = true
+Thredded.currently_online_enabled = false
 
 # Whether private messaging functionality is enabled.
 Thredded.private_messaging_enabled = true
@@ -161,13 +161,6 @@ Thredded.layout = 'thredded/application'
 #     'hi'
 #   end
 # end
-
-Rails.application.config.to_prepare do
-  Thredded.view_hooks.post_common.actions.config.after do |post:, **_args|
-    # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
-    render('thredded/posts_common/library_actions', post: post)
-  end
-end
 
 # ==> Topic following
 #

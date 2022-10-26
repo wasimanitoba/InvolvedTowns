@@ -9,7 +9,6 @@ RSpec.describe 'tags/show', type: :view do
     @tag = assign(:tag, tag)
   end
 
-
   it 'renders attributes in <p>' do
     render
     expect(rendered).to match(/Title/)
