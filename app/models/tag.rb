@@ -5,11 +5,12 @@
 # Table name: tags
 #
 #  id         :bigint           not null, primary key
+#  iri_string :string
 #  path       :ltree
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  tag_id     :bigint                                  # i should drop this column?
+#  tag_id     :bigint
 #  user_id    :bigint           not null
 #
 # Indexes

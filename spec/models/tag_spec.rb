@@ -5,6 +5,7 @@
 # Table name: tags
 #
 #  id         :bigint           not null, primary key
+#  iri_string :string
 #  path       :ltree
 #  title      :string           not null
 #  created_at :datetime         not null

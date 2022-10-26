@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_21_012208) do
+ActiveRecord::Schema.define(version: 2022_10_25_113842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2022_10_21_012208) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.ltree "path"
+    t.string "iri_string"
     t.index ["path"], name: "index_tags_on_path", using: :gist
     t.index ["tag_id"], name: "index_tags_on_tag_id"
     t.index ["user_id"], name: "index_tags_on_user_id"

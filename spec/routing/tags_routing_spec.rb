@@ -3,14 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe TagsController, type: :routing do
-  pending 'routing' do
+  describe 'routing' do
+    pending 'Nested routes not updated here yet'
+
+    let(:user) { User.create!(password: 'fakepassword', email: 'fake@fake.com', name: 'fake name') }
+
     before do
-      user = User.create!(password: 'fakepassword', email: 'fake@fake.com', name: 'fake name')
-      sign_in user
+      sign_in(user)
     end
 
-    it 'routes to #index' do
-      expect(get: 'tags').to route_to('tags#index')
+    it 'routes to #index', auto: false do
+      expect(get: user_tags_path(user_id: user.id)).to route_to('tags#index', user_id: user.id.to_s)
     end
 
     it 'routes to #new' do

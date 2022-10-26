@@ -11,7 +11,7 @@
     <link href="https://unpkg.com/@blueprintjs/core@^4.0.0/lib/css/blueprint.css" rel="stylesheet" />
     <%= stylesheet_link_tag 'thredded', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_packs_with_chunks_tag('application', 'data-turbolinks-track': 'reload') %>
   </head>
   <body>
     <%= render('layouts/partials/navbar') %> 

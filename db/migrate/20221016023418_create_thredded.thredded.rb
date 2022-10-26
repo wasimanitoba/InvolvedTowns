@@ -5,7 +5,6 @@
 require 'thredded/base_migration'
 
 # rubocop:disable Metrics/ClassLength
-# rubocop:disable Metrics/MethodLength
 class CreateThredded < Thredded::BaseMigration
   def change
     unless table_exists?(:friendly_id_slugs)
@@ -274,5 +273,4 @@ class CreateThredded < Thredded::BaseMigration
                     :thredded_posts, column: :post_id, on_delete: :cascade
   end
 end
-# rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ClassLength
