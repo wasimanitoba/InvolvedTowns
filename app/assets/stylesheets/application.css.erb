@@ -22,9 +22,11 @@
 .flex { display: flex; }
 
 .justify-apart { justify-content: space-between; }
-
+#usersFilterList > ul > li { display: flex; justify-content: space-between; }
+#usersFilterList > ul > li[hidden] { display: none; }
+.button-like-details ul { background: white; z-index: 20; }
 .mt-1 { margin-top: 1em; }
-.button-like {
+.button-like, .button-like-details {
   align-items: center;
   appearance: none;
   background-color: #fff;
