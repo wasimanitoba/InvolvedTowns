@@ -2,7 +2,7 @@ import PouchDB from 'pouchdb';
 import React from "react";
 import ReactDOM from 'react-dom/client';
 import Messages from "./Messages";
-import { HotkeysProvider, Icon, MenuItem, TextArea } from "@blueprintjs/core";
+import { Icon, MenuItem, TextArea } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
 
@@ -34,9 +34,10 @@ class Chat extends React.Component {
   }
 
   async componentDidMount() {
-    const doc     = await this.getAllNotes()
-    const tags    = await this.getAllTags(); 
-    const entries = doc.rows;
+    const doc     = await this.getAllNotes();
+    const tags    = await this.getAllTags();
+    console.log({doc, tags});
+    const entries = doc.rows.map((row)=>{ return row.doc });
     this.setState({ entries, tags: tags.rows || [] });
     this.render();
   }
@@ -123,11 +124,6 @@ class Chat extends React.Component {
     });
   }
 
-  async sync() {
-    // TODO: we don't want to hardcode the password or `localhost` here.
-    this.state.db.replicate.to('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development');
-  }
-
   /**
    * Checks the input for a value, adds the value to the database and returns it.
    * @returns Object - the message which has just been added to the database.
@@ -139,7 +135,7 @@ class Chat extends React.Component {
     const tags       = this.state.selectedTags;
     const newMessage = { content, tags, timestamp, _id: key, key };
 
-    await this.state.db.entries.add(newMessage);
+    await this.state.db.put(newMessage);
 
     return newMessage;
   }
@@ -150,57 +146,54 @@ class Chat extends React.Component {
     const entries = this.state.entries;
 
     return (
-      <HotkeysProvider>
-        <details open className={'chat-toggle'}>
-          <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
+      <details open className={'chat-toggle'}>
+      <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
 
-          <div className="chat">
-            <div className="messages">
-              <div id="messages-content" className="messages-content">
-                <Messages db={this.state.db} entries={entries} tags={[]} />
-              </div>
-            </div>
-            <div className="chat-tags message-box">
-              <form onSubmit={this.handleSubmit} >
-                <div className="flex message-input">
-                  <TextArea
-                    onChange={this.handleChange}
-                    placeholder="Send yourself a note..."
-                    ref={handleInputRef}
-                    value={this.state.currentValue}
-                  />
-                  <button type="submit" className="message-submit">Send</button>
-                </div>
-              </form>
-              <MultiSelect2
-                className={'tagsHolder'}
-                createNewItemFromQuery={(inputText) => {
-                  return { title: inputText, id: `${Math.floor(Math.random() * 1000)}-${new Date().valueOf()}`, category: '' };
-                }}
-                createNewItemRenderer={renderCreateNewMenuItem}
-                itemPredicate={this.state.tagsFilter}
-                itemRenderer={this.renderSelection}
-                items={this.state.tags}
-                onItemSelect={this.setSelectedTag}
-                onRemove={(tagToRemove) => {
-                  let tags = this.state.tags;
-                  this.setState({
-                    selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
-                    tags: Array.from(new Set(tags.concat(tagToRemove)))
-                  });
-                  this.render();
-                }}
-                menuProps={{ "aria-label": "tags" }}
-                placeholder={'All Topics'}
-                resetOnSelect={this.clearTags}
-                selectedItems={this.state.selectedTags}
-                tagRenderer={(item) => { return item.title; }}
-              />
-            </div>
+      <div className="chat">
+        <div className="messages">
+          <div id="messages-content" className="messages-content">
+            <Messages db={this.state.db} entries={entries || []} tags={[]} />
           </div>
-        </details>
-      </HotkeysProvider>
-
+        </div>
+        <div className="chat-tags message-box">
+          <form onSubmit={this.handleSubmit} >
+            <div className="flex message-input">
+              <TextArea
+                onChange={this.handleChange}
+                placeholder="Send yourself a note..."
+                ref={handleInputRef}
+                value={this.state.currentValue}
+              />
+              <button type="submit" className="message-submit">Send</button>
+            </div>
+          </form>
+          <MultiSelect2
+            className={'tagsHolder'}
+            createNewItemFromQuery={(inputText) => {
+              return { title: inputText, id: `${Math.floor(Math.random() * 1000)}-${new Date().valueOf()}`, category: '' };
+            }}
+            createNewItemRenderer={renderCreateNewMenuItem}
+            itemPredicate={this.state.tagsFilter}
+            itemRenderer={this.renderSelection}
+            items={this.state.tags || []}
+            onItemSelect={this.setSelectedTag}
+            onRemove={(tagToRemove) => {
+              let tags = this.state.tags;
+              this.setState({
+                selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
+                tags: Array.from(new Set(tags.concat(tagToRemove)))
+              });
+              this.render();
+            }}
+            menuProps={{ "aria-label": "tags" }}
+            placeholder={'All Topics'}
+            resetOnSelect={this.clearTags}
+            selectedItems={this.state.selectedTags}
+            tagRenderer={(item) => { return item.title; }}
+          />
+        </div>
+      </div>
+    </details>
     )
   }
 }

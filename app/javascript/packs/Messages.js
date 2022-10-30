@@ -3,8 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import { Icon, Tag } from "@blueprintjs/core";
 
 const Messages = (props) => {
-  const messages = (props.entries.map(({ doc }) => {
-    return <Message db={props.db} key={doc.key} tags={doc.tags} timestamp={doc.timestamp} value={doc.content} notes={doc.notes} />
+  const messages = (props.entries.map((doc) => {
+    return <Message db={props.db} key={doc.key} tags={doc.tags || []} timestamp={doc.timestamp} value={doc.content} notes={doc.notes} />
   }));
 
   messages.reverse();
@@ -68,7 +68,7 @@ class Message extends React.Component {
                   onRemove={() => {
                     let updatedTags = this.state.tags.filter(t => t !== tag)
                     this.setState({ tags: updatedTags });
-                    this.state.db.entries.update(this.state.id, { tags: updatedTags }).then(() => {
+                    this.state.db.update(this.state.id, { tags: updatedTags }).then(() => {
                       this.render()
                     })
                   }}

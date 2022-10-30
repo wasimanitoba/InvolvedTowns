@@ -1,12 +1,12 @@
-import Dexie from 'dexie'
+import PouchDB from 'pouchdb';
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values  = { user: String }
 
   connect() {
-    this.db = new Dexie('stackbiblio-entries-development')
-    this.db.version(1).stores({ entries: '++id, content, timestamp' });
+    this.db    = new PouchDB('stackbiblio-development');
+    this.tagDB = new PouchDB('tag-store-development');  
   }
 
   /**
@@ -16,7 +16,7 @@ export default class extends Controller {
     event.preventDefault();
     // We will export the post with a couple modifications to metadata
     let post       = JSON.parse(event.currentTarget.dataset.entry).post
-    post.timestamp = post.created_at;
+    post.timestamp = JSON.stringify(post.created_at);
     const form     = event.currentTarget;
     let tags       = form.querySelector('input').value
                          .split(',')
@@ -32,15 +32,11 @@ export default class extends Controller {
     
     // We check for an existing note with the same user, messageboard and post ID
     // In the future, we can also check for the hash of the content to identify duplicates?
-    post.id = `${post.user_id}-${post.messageboard_id}-${post.id}`;
-    let currentEntry = await this.db.entries.get(post.id);
+    post._id = `${post.user_id}-${post.messageboard_id}-${post.id}`;
+    this.db.put(post).then((result)=>{
+      console.log('added post', result);
+    })
 
-    if (!currentEntry) {
-      await this.db.entries.add(post);
-    }
-    else {
-      alert('This note already exists!')
-    }
 
     // ..... do a better job here
     form.querySelector('input').value      = post.tags.map((tag)=>{ return tag.title; }).join(', ');
