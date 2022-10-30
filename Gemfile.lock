@@ -325,6 +325,10 @@ GEM
       thread_safe (~> 0.1)
     unicode-display_width (2.3.0)
     uri_template (0.7.0)
+    view_component (2.74.1)
+      activesupport (>= 5.0.0, < 8.0)
+      concurrent-ruby (~> 1.0)
+      method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -366,6 +370,7 @@ DEPENDENCIES
   thredded (~> 1.0)
   turbolinks (~> 5)
   tzinfo-data
+  view_component
   web-console (>= 3.3.0)
   webpacker (~> 4.0)
 

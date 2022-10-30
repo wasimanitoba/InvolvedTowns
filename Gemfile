@@ -57,3 +57,4 @@ gem 'pg_ltree'
 
 # gem "rack-mini-profiler", "~> 3.0"
 gem 'stimulus-rails'
+gem "view_component"

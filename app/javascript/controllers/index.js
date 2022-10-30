@@ -9,3 +9,6 @@ application.register("filter", FilterController)
 
 import StackbiblioController from "./stackbiblio_controller"
 application.register("stackbiblio", StackbiblioController)
+
+import SyncerController from "./syncer_controller"
+application.register("syncer", SyncerController)

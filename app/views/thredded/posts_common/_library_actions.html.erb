@@ -4,7 +4,8 @@
       data-action="submit->stackbiblio#exportPostFromForumToDB" 
       data-controller="stackbiblio" 
       data-entry="<%= JSON.generate(post.as_json)%>"
-      data-stackbiblio-user-value="<%= @user&.id %>">
+      data-stackbiblio-user-value="<%= @user&.id %>"
+      data-turbo="false">
   <div>
     <details>
       <summary>Add Notes</summary>
