@@ -7,13 +7,8 @@
     <%- @users.each do |user| %>
       <li>
         <span><%= user.name %></span>
-          <details  class="button-like-details">
-            <summary>Actions</summary>
-            <ul>
-              <li><%= link_to(user.name, edit_user_path(user)) %></li>
-              <li><%= link_to('Posts', admin_user_posts_path(user)) %></li>
-            </ul>
-          </details>
+        <span><%= link_to(user.name, edit_user_path(user)) %></span>
+        <span><%= link_to('Posts', admin_user_posts_path(user)) %></span>
       </li>
     <%- end %>
   </ul>

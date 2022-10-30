@@ -9,9 +9,9 @@
       <summary class="button-like">StackBiblio</summary>
       <ul>
         <li><%= link_to('My Note Library', '/library') %></li>
-        <li><%= link_to('My Note Stack', '/stack') %></li>
         <%- if current_user %>
           <li><%= link_to('My Tags', Rails.application.routes.url_helpers.user_tags_path(user_id: current_user.id)) %></li>
+          <li><%= link_to('Messages', Rails.application.routes.url_helpers.messages_path) %></li>
         <%- end %>
       </ul>
     </details>

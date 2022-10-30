@@ -1,26 +1,10 @@
-import Dexie from 'dexie';
+import PouchDB from 'pouchdb';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
 import '@github/filter-input-element';
 import { MenuItem } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
-import { useLiveQuery } from "dexie-react-hooks";
-
-const tagsFilter = (query, tag, _index, exactMatch) => {
-  const normalizedTitle = tag.title.toLowerCase();
-  const normalizedQuery = query.toLowerCase();
-
-  if (exactMatch) {
-    return normalizedTitle === normalizedQuery;
-  } else {
-    return `${tag.id || tag.key}. ${normalizedTitle}`.indexOf(normalizedQuery) >= 0;
-  }
-};
-
-const clearTags = () => {
-  this.setState({ selectedTags: [] })
-}
 
 const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
   if (!modifiers.matchesPredicate) {
@@ -42,56 +26,36 @@ const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, qu
 };
 
 
-function StackBiblio() {
-  const db = new Dexie('stackbiblio-entries-development')
-  db.version(1).stores({ entries: '++id, content, timestamp' })
-  let allItems = useLiveQuery(() => db.entries.toArray(), []);
-  if (!allItems) return null;
-
-  let titles = new Set();
-  let tagArray = [];
-  // TODO: Let's add a separate tag store instead of this
-  allItems.forEach((item) => {
-    item.tags.forEach((tag) => {
-      if (!titles.has(tag.title)) {
-        tagArray.push(tag);
-        titles.add(tag.title);
-      }
-    });
-  })
-
-  return (<Library clearTags={clearTags} entries={allItems} renderSelection={renderSelection} tags={tagArray} tagsFilter={tagsFilter} />);
-}
-
-class LibraryEntry extends React.Component {
+class StackBiblio extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      content: props.entry.content,
-      tags: props.entry.tags
-    };
-  }
-  render() {
-    return (
-      <li> <ReactMarkdown>{this.state.content}</ReactMarkdown>
-        <sub hidden><sup>{this.state.tags.map((tag) => { return `${tag.title} ${tag.category}` })}</sup></sub></li>
-    )
-  }
-}
-
-class Library extends React.Component {
-  constructor(props) {
-    super(props);
-    const { entries, renderSelection, setSelectedTag, tags, tagsFilter } = props;
-    this.state = { entries, selectedTags: [], tags, tagsFilter, };
     this.renderSelection    = renderSelection.bind(this);
     this.setSelectedTag     = this.setSelectedTag.bind(this);
     this.setSelectedEntries = this.setSelectedEntries.bind(this);
     this.clearTags          = this.clearTags.bind(this);
+    const db                = new PouchDB('stackbiblio-development');
+    const tagDB             = new PouchDB('tag-store-development');
+
+    this.state = {db, tagDB, notes: [], entries: [], tags: [], selectedTags: [] };
   }
 
-  clearTags() { this.setState({ selectedTags: [] }); this.render(); }
+  async componentDidMount() {
+    const notes   = await this.getAllNotes();
+    const tags    = await this.getAllTags(); 
+    const entries = notes.rows;
+    this.setState({ entries, tags: tags.rows || [] });
+    this.render()
+  }
 
+  async getAllTags() { return await this.state.tagDB.allDocs({include_docs: true, descending: true}); }
+
+  async getAllNotes() { return await this.state.db.allDocs({include_docs: true, descending: true}); }
+
+  // TODO: use an API token instead or set up CORS so that the password can only be used by StackBiblio.com
+  // TODO: ensure that we can use host URL instead of `localhost` 
+  async sync() { this.state.db.replicate.to('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development'); }
+
+  clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
   setSelectedTag = (userSelectedTag) => {
     const selectedTags = this.state.selectedTags;
@@ -116,42 +80,59 @@ class Library extends React.Component {
   }
 
   render() {
+
     return (
       <div>
-        <filter-input aria-owns="entries" class={'flex justify-apart'}>
-          <input placeholder="Filter" type="text" autoFocus autoComplete="off" />
-          <MultiSelect2
-            className={'tagsHolder'}
-            itemPredicate={this.state.tagsFilter}
-            itemRenderer={this.renderSelection}
-            items={this.state.tags}
-            onItemSelect={this.setSelectedEntries}
-            onRemove={(tagToRemove) => {
-              let tags = this.state.tags;
-              this.setState({
-                selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
-                tags: tags.concat(tagToRemove)
-              });
-              this.render();
-            }}
-            menuProps={{ "aria-label": "tags" }}
-            placeholder={'All Topics'}
-            resetOnSelect={this.clearTags}
-            selectedItems={this.state.selectedTags}
-            tagRenderer={(item) => { return (item.title); }}
-          />
-        </filter-input>
-        <ul id="entries" data-filter-list>
-          {this.state.entries.map((entry) => {
-            return <LibraryEntry entry={entry} key={entry.id} />
-          })}
-        </ul>
-      </div>
-    );
+      <filter-input aria-owns="entries" class={'flex justify-apart'}>
+        <input placeholder="Filter" type="text" autoFocus autoComplete="off" />
+        <MultiSelect2
+          className={'tagsHolder'}
+          itemPredicate={this.state.tagsFilter}
+          itemRenderer={this.renderSelection}
+          items={this.state.tags}
+          onItemSelect={this.setSelectedEntries}
+          onRemove={(tagToRemove) => {
+            let tags = this.state.tags;
+            this.setState({
+              selectedTags: this.state.selectedTags.filter(tag => tag !== tagToRemove),
+              tags: tags.concat(tagToRemove)
+            });
+            this.render();
+          }}
+          menuProps={{ "aria-label": "tags" }}
+          placeholder={'All Topics'}
+          resetOnSelect={this.clearTags}
+          selectedItems={this.state.selectedTags}
+          tagRenderer={(item) => { return (item.title); }}
+        />
+      </filter-input>
+      <ul id="entries" data-filter-list>
+        { 
+          this.state.entries.map((entry) => {
+          return <LibraryEntry entry={entry} key={entry.id} />
+        })}
+      </ul>
+    </div>
+  );
   }
 }
 
-
+class LibraryEntry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: props.entry.doc.content,
+      tags: props.entry.doc.tags
+    };
+  }
+  render() {
+    return (
+      <li> <ReactMarkdown>{this.state.content}</ReactMarkdown>
+          <sub hidden><sup>{this.state.tags.map((tag) => { return `${tag.title} ${tag.category}` })}</sup></sub>
+      </li>
+    )
+  }
+}
 
 const rootElement = document.getElementById('library');
 if (!rootElement) {
