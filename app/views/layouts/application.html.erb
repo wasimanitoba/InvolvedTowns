@@ -13,7 +13,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_packs_with_chunks_tag('application', 'data-turbolinks-track': 'reload') %>
   </head>
-  <body>
+  <body class=<%= @page_name || 'default_page_type' %>>
     <%= render('layouts/partials/navbar') %> 
     <%= yield %>
     <%= javascript_packs_with_chunks_tag('chat') %>     <%# This has to be in the body instead of the head? %>

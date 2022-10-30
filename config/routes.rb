@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   get '/library', to: 'stackbiblio#index'
-  get '/stack', to: 'stackbiblio#stack'
+  get '/messaging', to: 'stackbiblio#messaging', as: :messages
   get '/me', to: 'users#me', as: :me
   get '/about', to: 'home#index'
   root to: redirect('/home')

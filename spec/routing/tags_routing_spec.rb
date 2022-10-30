@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe TagsController, type: :routing do
-  describe 'routing' do
-    pending 'Nested routes not updated here yet'
-
+  pending 'Nested routes not updated here yet' do
     let(:user) { User.create!(password: 'fakepassword', email: 'fake@fake.com', name: 'fake name') }
 
     before do

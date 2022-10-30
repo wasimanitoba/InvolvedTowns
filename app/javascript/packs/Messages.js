@@ -3,8 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import { Icon, Tag } from "@blueprintjs/core";
 
 const Messages = (props) => {
-  const messages = (props.entries.map(({ id, tags, timestamp, content, notes }) => {
-    return <Message db={props.db} key={id} id={id} tags={tags} timestamp={timestamp} value={content} notes={notes} />
+  const messages = (props.entries.map(({ doc }) => {
+    return <Message db={props.db} key={doc.key} tags={doc.tags} timestamp={doc.timestamp} value={doc.content} notes={doc.notes} />
   }));
 
   messages.reverse();
@@ -14,8 +14,8 @@ const Messages = (props) => {
 class Message extends React.Component {
   constructor(props) {
     super(props);
-    let { db, id, timestamp, tags, value, notes } = props;
-    this.state = { db, id, notes, timestamp, tags, value, deleted: false };
+    let { db, id, timestamp, tags, value, notes, rev } = props;
+    this.state = { db, id, rev, notes, timestamp, tags, value, deleted: false };
   }
   annotations() {
     if (!this.state.notes) { return null; }
@@ -34,7 +34,7 @@ class Message extends React.Component {
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            this.state.db.entries.delete(this.state.id);
+            this.state.db.remove(this.state.id, this.state.key);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()
@@ -59,8 +59,8 @@ class Message extends React.Component {
               </details>
             </div>
             <ReactMarkdown>{this.state.value}</ReactMarkdown>
-          </form>
-          <div className="tags">{
+          </form>          <div className="tags">{
+
             this.state.tags.map((tag) => {
               return (
                 <Tag
@@ -76,7 +76,9 @@ class Message extends React.Component {
                   {`${tag.title} ${tag.category}`}
                 </Tag>
               )
-            })}
+            })
+
+          }
           </div>
         </div>
       </div>
