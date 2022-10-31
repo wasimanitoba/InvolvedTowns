@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     resources :tags
   end
 
-  get '/library', to: 'stackbiblio#index'
+  scope '/library' do
+    get '/compose', to: 'stackbiblio#new'
+    get '/', to: 'stackbiblio#library'
+  end
+
   get '/messaging', to: 'stackbiblio#messaging', as: :messages
   get '/me', to: 'users#me', as: :me
   get '/about', to: 'home#index'

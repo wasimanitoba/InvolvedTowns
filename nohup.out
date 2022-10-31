@@ -1,0 +1,9 @@
+=> Booting Puma
+=> Rails 6.0.6 application starting in production 
+=> Run `rails server --help` for more startup options
+Puma starting in single mode...
+* Version 4.3.12 (ruby 2.7.4-p191), codename: Mysterious Traveller
+* Min threads: 5, max threads: 5
+* Environment: production
+* Listening on tcp://0.0.0.0:80
+Use Ctrl-C to stop
