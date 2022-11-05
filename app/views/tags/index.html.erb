@@ -6,7 +6,6 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Tag</th>
       <th>User</th>
       <th colspan="3"></th>
     </tr>
@@ -16,11 +15,10 @@
     <% @tags.each do |tag| %>
       <tr>
         <td><%= tag.title %></td>
-        <td><%= tag.tag_id %></td>
         <td><%= tag.user_id %></td>
-        <td><%= link_to 'Show', user_tag_path(tag, tag.user_id) %></td>
-        <td><%= link_to 'Edit', edit_user_tag_path(tag, tag.user_id) %></td>
-        <td><%= link_to 'Destroy', user_tag_path(tag, tag.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', tag %></td>
+        <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
+        <td><%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,6 +26,4 @@
 
 <br>
 
-
-<%# @tags.last.user_id is here just for testing purposes because i haven't set up current_user in this spot yet %>
-<%= link_to 'New Tag', new_user_tag_path(user_id: current_user || @tags.last.user_id) %> 
+<%= link_to 'New Tag', new_tag_path %>

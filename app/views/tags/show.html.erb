@@ -6,14 +6,9 @@
 </p>
 
 <p>
-  <strong>Tag:</strong>
-  <%= @tag.tag_id %>
-</p>
-
-<p>
   <strong>User:</strong>
   <%= @tag.user_id %>
 </p>
 
-<%= link_to 'Edit', edit_user_tag_path(id: @tag.id, user_id: @tag.user_id) %> |
-<%= link_to 'Back', user_tags_path(user_id: @tag.user_id) %>
+<%= link_to 'Edit', edit_tag_path(@tag) %> |
+<%= link_to 'Back', tags_path %>
