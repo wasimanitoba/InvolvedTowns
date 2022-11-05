@@ -1,8 +1,9 @@
 # == Schema Information
 #
-# Table name: tags
+# Table name: notes
 #
 #  id         :bigint           not null, primary key
+#  content    :text
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -10,7 +11,7 @@
 #
 # Indexes
 #
-#  index_tags_on_user_id  (user_id)
+#  index_notes_on_user_id  (user_id)
 #
 # Foreign Keys
 #
@@ -18,6 +19,6 @@
 #
 require 'rails_helper'
 
-RSpec.describe Tag, type: :model do
+RSpec.describe Note, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

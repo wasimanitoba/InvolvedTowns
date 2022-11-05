@@ -12,10 +12,10 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/tags", type: :request do
+RSpec.describe "/reminders", type: :request do
   
   # This should return the minimal set of attributes required to create a valid
-  # Tag. As you add validations to Tag, be sure to
+  # Reminder. As you add validations to Reminder, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -27,58 +27,58 @@ RSpec.describe "/tags", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Tag.create! valid_attributes
-      get tags_url
+      Reminder.create! valid_attributes
+      get reminders_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      tag = Tag.create! valid_attributes
-      get tag_url(tag)
+      reminder = Reminder.create! valid_attributes
+      get reminder_url(reminder)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
     it "renders a successful response" do
-      get new_tag_url
+      get new_reminder_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
     it "renders a successful response" do
-      tag = Tag.create! valid_attributes
-      get edit_tag_url(tag)
+      reminder = Reminder.create! valid_attributes
+      get edit_reminder_url(reminder)
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Tag" do
+      it "creates a new Reminder" do
         expect {
-          post tags_url, params: { tag: valid_attributes }
-        }.to change(Tag, :count).by(1)
+          post reminders_url, params: { reminder: valid_attributes }
+        }.to change(Reminder, :count).by(1)
       end
 
-      it "redirects to the created tag" do
-        post tags_url, params: { tag: valid_attributes }
-        expect(response).to redirect_to(tag_url(Tag.last))
+      it "redirects to the created reminder" do
+        post reminders_url, params: { reminder: valid_attributes }
+        expect(response).to redirect_to(reminder_url(Reminder.last))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Tag" do
+      it "does not create a new Reminder" do
         expect {
-          post tags_url, params: { tag: invalid_attributes }
-        }.to change(Tag, :count).by(0)
+          post reminders_url, params: { reminder: invalid_attributes }
+        }.to change(Reminder, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post tags_url, params: { tag: invalid_attributes }
+        post reminders_url, params: { reminder: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -90,42 +90,42 @@ RSpec.describe "/tags", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested tag" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
-        tag.reload
+      it "updates the requested reminder" do
+        reminder = Reminder.create! valid_attributes
+        patch reminder_url(reminder), params: { reminder: new_attributes }
+        reminder.reload
         skip("Add assertions for updated state")
       end
 
-      it "redirects to the tag" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
-        tag.reload
-        expect(response).to redirect_to(tag_url(tag))
+      it "redirects to the reminder" do
+        reminder = Reminder.create! valid_attributes
+        patch reminder_url(reminder), params: { reminder: new_attributes }
+        reminder.reload
+        expect(response).to redirect_to(reminder_url(reminder))
       end
     end
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: invalid_attributes }
+        reminder = Reminder.create! valid_attributes
+        patch reminder_url(reminder), params: { reminder: invalid_attributes }
         expect(response).to be_successful
       end
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested tag" do
-      tag = Tag.create! valid_attributes
+    it "destroys the requested reminder" do
+      reminder = Reminder.create! valid_attributes
       expect {
-        delete tag_url(tag)
-      }.to change(Tag, :count).by(-1)
+        delete reminder_url(reminder)
+      }.to change(Reminder, :count).by(-1)
     end
 
-    it "redirects to the tags list" do
-      tag = Tag.create! valid_attributes
-      delete tag_url(tag)
-      expect(response).to redirect_to(tags_url)
+    it "redirects to the reminders list" do
+      reminder = Reminder.create! valid_attributes
+      delete reminder_url(reminder)
+      expect(response).to redirect_to(reminders_url)
     end
   end
 end

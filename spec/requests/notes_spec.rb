@@ -12,10 +12,10 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/tags", type: :request do
+RSpec.describe "/notes", type: :request do
   
   # This should return the minimal set of attributes required to create a valid
-  # Tag. As you add validations to Tag, be sure to
+  # Note. As you add validations to Note, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -27,58 +27,58 @@ RSpec.describe "/tags", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Tag.create! valid_attributes
-      get tags_url
+      Note.create! valid_attributes
+      get notes_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      tag = Tag.create! valid_attributes
-      get tag_url(tag)
+      note = Note.create! valid_attributes
+      get note_url(note)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
     it "renders a successful response" do
-      get new_tag_url
+      get new_note_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
     it "renders a successful response" do
-      tag = Tag.create! valid_attributes
-      get edit_tag_url(tag)
+      note = Note.create! valid_attributes
+      get edit_note_url(note)
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Tag" do
+      it "creates a new Note" do
         expect {
-          post tags_url, params: { tag: valid_attributes }
-        }.to change(Tag, :count).by(1)
+          post notes_url, params: { note: valid_attributes }
+        }.to change(Note, :count).by(1)
       end
 
-      it "redirects to the created tag" do
-        post tags_url, params: { tag: valid_attributes }
-        expect(response).to redirect_to(tag_url(Tag.last))
+      it "redirects to the created note" do
+        post notes_url, params: { note: valid_attributes }
+        expect(response).to redirect_to(note_url(Note.last))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Tag" do
+      it "does not create a new Note" do
         expect {
-          post tags_url, params: { tag: invalid_attributes }
-        }.to change(Tag, :count).by(0)
+          post notes_url, params: { note: invalid_attributes }
+        }.to change(Note, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post tags_url, params: { tag: invalid_attributes }
+        post notes_url, params: { note: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -90,42 +90,42 @@ RSpec.describe "/tags", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested tag" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
-        tag.reload
+      it "updates the requested note" do
+        note = Note.create! valid_attributes
+        patch note_url(note), params: { note: new_attributes }
+        note.reload
         skip("Add assertions for updated state")
       end
 
-      it "redirects to the tag" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: new_attributes }
-        tag.reload
-        expect(response).to redirect_to(tag_url(tag))
+      it "redirects to the note" do
+        note = Note.create! valid_attributes
+        patch note_url(note), params: { note: new_attributes }
+        note.reload
+        expect(response).to redirect_to(note_url(note))
       end
     end
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        tag = Tag.create! valid_attributes
-        patch tag_url(tag), params: { tag: invalid_attributes }
+        note = Note.create! valid_attributes
+        patch note_url(note), params: { note: invalid_attributes }
         expect(response).to be_successful
       end
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested tag" do
-      tag = Tag.create! valid_attributes
+    it "destroys the requested note" do
+      note = Note.create! valid_attributes
       expect {
-        delete tag_url(tag)
-      }.to change(Tag, :count).by(-1)
+        delete note_url(note)
+      }.to change(Note, :count).by(-1)
     end
 
-    it "redirects to the tags list" do
-      tag = Tag.create! valid_attributes
-      delete tag_url(tag)
-      expect(response).to redirect_to(tags_url)
+    it "redirects to the notes list" do
+      note = Note.create! valid_attributes
+      delete note_url(note)
+      expect(response).to redirect_to(notes_url)
     end
   end
 end

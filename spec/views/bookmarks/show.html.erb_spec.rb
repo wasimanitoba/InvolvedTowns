@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "tags/show", type: :view do
+RSpec.describe "bookmarks/show", type: :view do
   before(:each) do
-    @tag = assign(:tag, Tag.create!(
+    @bookmark = assign(:bookmark, Bookmark.create!(
+      url: "Url",
       title: "Title",
       user: nil
     ))
@@ -10,6 +11,7 @@ RSpec.describe "tags/show", type: :view do
 
   it "renders attributes in <p>" do
     render
+    expect(rendered).to match(/Url/)
     expect(rendered).to match(/Title/)
     expect(rendered).to match(//)
   end
