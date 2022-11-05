@@ -26,7 +26,7 @@ const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, qu
 };
 
 
-class StackBiblio extends React.Component {
+class List extends React.Component {
   constructor(props) {
     super(props);
     this.renderSelection    = renderSelection.bind(this);
@@ -105,14 +105,14 @@ class StackBiblio extends React.Component {
           /> */}
         </filter-input>
         <ul id="entries" data-filter-list>
-          {this.state.entries.map((entry) => { return <LibraryEntry entry={entry} key={entry.id} /> })}
+          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry.id} /> })}
         </ul>
       </div>
     );
   }
 }
 
-class LibraryEntry extends React.Component {
+class ListEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -130,12 +130,12 @@ class LibraryEntry extends React.Component {
   }
 }
 
-const rootElement = document.getElementById('library');
+const rootElement = document.getElementById('list');
 if (!rootElement) {
   document.addEventListener('DOMContentLoaded', () => {
-    ReactDOM.createRoot(document.getElementById('library')).render(<StackBiblio />);
+    ReactDOM.createRoot(document.getElementById('list')).render(<List />);
   });
 }
 else {
-  ReactDOM.createRoot(rootElement).render(<StackBiblio />);
+  ReactDOM.createRoot(rootElement).render(<List />);
 }
