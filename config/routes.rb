@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :collections
+  resources :bookmarks
+  resources :reminders
+  resources :notes
   devise_for :users
   mount Thredded::Engine => '/home'
 

@@ -10,7 +10,51 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_25_113842) do
+ActiveRecord::Schema.define(version: 2022_11_05_005235) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "ltree"
+  enable_extension "plpgsql"
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.string "url"
+    t.string "title"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "bookmarks_collections", id: false, force: :cascade do |t|
+    t.bigint "bookmark_id", null: false
+    t.bigint "collection_id", null: false
+    t.index ["bookmark_id", "collection_id"], name: "index_bookmarks_collections_on_bookmark_id_and_collection_id"
+    t.index ["collection_id", "bookmark_id"], name: "index_bookmarks_collections_on_collection_id_and_bookmark_id"
+  end
+
+  create_table "bookmarks_reminders", id: false, force: :cascade do |t|
+    t.bigint "bookmark_id", null: false
+    t.bigint "reminder_id", null: false
+    t.index ["bookmark_id", "reminder_id"], name: "index_bookmarks_reminders_on_bookmark_id_and_reminder_id"
+    t.index ["reminder_id", "bookmark_id"], name: "index_bookmarks_reminders_on_reminder_id_and_bookmark_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_collections_on_user_id"
+  end
+
+  create_table "collections_notes", id: false, force: :cascade do |t|
+    t.bigint "note_id", null: false
+    t.bigint "collection_id", null: false
+    t.index ["collection_id", "note_id"], name: "index_collections_notes_on_collection_id_and_note_id"
+    t.index ["note_id", "collection_id"], name: "index_collections_notes_on_note_id_and_collection_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -21,6 +65,55 @@ ActiveRecord::Schema.define(version: 2022_10_25_113842) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "linked_tags", force: :cascade do |t|
+    t.bigint "subject_id", null: false
+    t.bigint "object_id", null: false
+    t.string "predicate", null: false
+    t.index ["object_id"], name: "index_linked_tags_on_object_id"
+    t.index ["subject_id"], name: "index_linked_tags_on_subject_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
+  create_table "notes_reminders", id: false, force: :cascade do |t|
+    t.bigint "note_id", null: false
+    t.bigint "reminder_id", null: false
+    t.index ["note_id", "reminder_id"], name: "index_notes_reminders_on_note_id_and_reminder_id"
+    t.index ["reminder_id", "note_id"], name: "index_notes_reminders_on_reminder_id_and_note_id"
+  end
+
+  create_table "notes_tags", id: false, force: :cascade do |t|
+    t.bigint "note_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["note_id", "tag_id"], name: "index_notes_tags_on_note_id_and_tag_id"
+    t.index ["tag_id", "note_id"], name: "index_notes_tags_on_tag_id_and_note_id"
+  end
+
+  create_table "reminders", force: :cascade do |t|
+    t.datetime "due"
+    t.string "excerpt"
+    t.bigint "user_id", null: false
+    t.string "reminder_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_reminders_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "title"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "thredded_categories", force: :cascade do |t|
@@ -277,6 +370,13 @@ ActiveRecord::Schema.define(version: 2022_10_25_113842) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "collections", "users"
+  add_foreign_key "linked_tags", "tags", column: "object_id"
+  add_foreign_key "linked_tags", "tags", column: "subject_id"
+  add_foreign_key "notes", "users"
+  add_foreign_key "reminders", "users"
+  add_foreign_key "tags", "users"
   add_foreign_key "thredded_messageboard_users", "thredded_messageboards", on_delete: :cascade
   add_foreign_key "thredded_messageboard_users", "thredded_user_details", on_delete: :cascade
   add_foreign_key "thredded_user_post_notifications", "thredded_posts", column: "post_id", on_delete: :cascade
