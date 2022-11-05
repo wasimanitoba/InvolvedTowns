@@ -1,6 +1,6 @@
 <h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { controller: 'syncer' }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
@@ -17,8 +17,8 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    <%= f.label :password_confirmation, data: { action: 'click->syncer#createAccount' } %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", data: { 'syncer-target': 'password' } %>
   </div>
 
   <div class="actions">
