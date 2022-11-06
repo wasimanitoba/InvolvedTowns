@@ -10,5 +10,11 @@ application.register("filter", FilterController)
 import StackbiblioController from "./stackbiblio_controller"
 application.register("stackbiblio", StackbiblioController)
 
+import SubmissionController from "./submission_controller"
+application.register("submission", SubmissionController)
+
 import SyncerController from "./syncer_controller"
 application.register("syncer", SyncerController)
+
+import TabController from "./tab_controller"
+application.register("tab", TabController)

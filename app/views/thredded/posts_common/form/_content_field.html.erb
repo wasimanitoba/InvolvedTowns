@@ -1,8 +1,19 @@
-<li>
   <%= form.label :content, content_label %>
   <%= view_hooks.post_form.content_text_area.render self, form: form, content_label: content_label do %>
       <%= render 'thredded/posts_common/form/before_content', form: form %>
       <%= form.text_area :content, {rows: 5, required: true, autofocus: !!params[:autofocus_new_post_content]} %>
       <%= render 'thredded/posts_common/form/after_content', form: form %>
+
+      <div data-controller="submission">
+        <div class="flex">
+          <span class="button-like" data-action="click->submission#addSourceLink">Add</span>
+          <input
+            data-submission-target="sourceToAdd"
+            placeholder='Cite your sources (recommended, but optional)'
+            autocomplete='off'>
+        </div>
+
+        <ul id='sources-list' data-submission-target='sourcesList'></ul>
+        <%= form.text_field :websites, data: { 'submission-target': 'websiteList' }, class: 'hidden-none-display' %>
+      </div>
   <% end %>
-</li>
