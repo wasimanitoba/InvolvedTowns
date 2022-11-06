@@ -12,7 +12,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= csrf_meta_tag %>
     <%= csp_meta_tag %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_packs_with_chunks_tag('application', 'data-turbolinks-track': 'reload') %>
     <%= javascript_include_tag 'thredded',
                                async: !Rails.application.config.assets.debug,
                                defer: true,
@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
   <body>
-    <%= render('layouts/partials/navbar') %> 
+    <%= render('layouts/partials/navbar') %>
     <%= yield %>
     <%= javascript_packs_with_chunks_tag('chat') %>     <%# This has to be in the body instead of the head? %>
     <div id="react-chat-container"></div>

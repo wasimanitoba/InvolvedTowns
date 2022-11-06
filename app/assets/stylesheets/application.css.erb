@@ -20,6 +20,27 @@
 @import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 
 .flex { display: flex; }
+form div input.hidden-none-display { display: none; }
+ul#sources-list p span,
+ul#sources-list p  {
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: .375em;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #363636;
+  cursor: pointer;
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  height: 2.5em;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) 1em;
+  text-align: center;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
 
 .justify-apart { justify-content: space-between; }
 #usersFilterList > ul > li { display: flex; justify-content: space-between; }
@@ -71,22 +92,22 @@
 }
 
 <%# html body a, html body li, html body p, a {
-  color: white;  
+  color: white;
 }
 
-textarea { 
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; 
+textarea {
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
 
 input { background: inherit; color: white; }
 
 body a:hover {
   color: black;
-  background-color: yellow;  
+  background-color: yellow;
 } %>
 
-<%# 
-.bannerImage { 
+<%#
+.bannerImage {
   background-image: url(<%= asset_path 'banner-opaque.png' );
   background-size: cover;
 } %>
@@ -159,25 +180,25 @@ html body div div.bp4-active {
   background: transparent !important
 }
 
-body div#root div filter-input input { 
-  width: 40%; 
+body div#root div filter-input input {
+  width: 40%;
   margin: 2%;
   height: fit-content;
 }
-.stack-biblio  { 
+.stack-biblio  {
                 display : flex;
-                justify-content: space-around; 
+                justify-content: space-around;
               }
 
 .sidebar      { width   : 15% ; }
-.tabs         { 
-  width   : 95% ; 
+.tabs         {
+  width   : 95% ;
   height  : 85vh;
 }
 .tabs > div   { width   : 100%; }
 .reading-area { width   : 80%;  }
 .tabs,
-#search-bar input, 
+#search-bar input,
 #chat-input input  {
   display: flex;
   margin-left: auto;
@@ -307,11 +328,11 @@ details.chat-toggle > summary {
   display: flex;
 }
 
-.messages .message.left .avatar  { 
+.messages .message.left .avatar  {
   left: -35px;
   bottom: -15px;
 }
-.messages .message.right .avatar { 
+.messages .message.right .avatar {
   right: 0px;
   bottom: -45px;
 }
@@ -418,7 +439,7 @@ details.chat-toggle > summary {
 .tagsHolder {
   margin-right: 2%;
   margin-left: 2%;
-} 
+}
 .message-input {
   margin: 2%;
 }
@@ -426,8 +447,8 @@ details.chat-toggle > summary {
   color: transparent;
 }
 /* .chat form.message-box input { background: inherit; color: unset; } */
-.chat .message-box textarea { 
-  background: inherit; 
+.chat .message-box textarea {
+  background: inherit;
   /* color: white;  */
   width: 90%;
 }

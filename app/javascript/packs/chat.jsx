@@ -146,7 +146,7 @@ class Chat extends React.Component {
     const entries = this.state.entries;
 
     return (
-      <details open className={'chat-toggle'}>
+      <details className={'chat-toggle'}>
       <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
 
       <div className="chat">
