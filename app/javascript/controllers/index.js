@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AnnotationController from "./annotation_controller"
+application.register("annotation", AnnotationController)
+
 import FilterController from "./filter_controller"
 application.register("filter", FilterController)
 
