@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2022_11_05_005235) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["url", "user_id"], name: "index_bookmarks_on_url_and_user_id", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
@@ -113,6 +114,7 @@ ActiveRecord::Schema.define(version: 2022_11_05_005235) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["title", "user_id"], name: "index_tags_on_title_and_user_id", unique: true
     t.index ["user_id"], name: "index_tags_on_user_id"
   end
 

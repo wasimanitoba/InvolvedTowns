@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: thredded_topics
+#
+#  id               :bigint           not null, primary key
+#  last_post_at     :datetime
+#  locked           :boolean          default(FALSE), not null
+#  moderation_state :integer          not null
+#  posts_count      :integer          default(0), not null
+#  slug             :text             not null
+#  sticky           :boolean          default(FALSE), not null
+#  title            :text             not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  hash_id          :string(20)       not null
+#  last_user_id     :bigint
+#  messageboard_id  :bigint           not null
+#  user_id          :bigint
+#
+# Indexes
+#
+#  index_thredded_topics_for_display         (moderation_state,sticky DESC,updated_at DESC)
+#  index_thredded_topics_on_hash_id          (hash_id)
+#  index_thredded_topics_on_last_post_at     (last_post_at)
+#  index_thredded_topics_on_messageboard_id  (messageboard_id)
+#  index_thredded_topics_on_slug             (slug) UNIQUE
+#  index_thredded_topics_on_user_id          (user_id)
+#  thredded_topics_title_fts                 (to_tsvector('english'::regconfig, title)) USING gist
+#
 module Thredded
   class Topic < ActiveRecord::Base # rubocop:disable Metrics/ClassLength
     include Thredded::TopicCommon
