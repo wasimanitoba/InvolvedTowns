@@ -5,7 +5,11 @@ class TagsController < ApplicationController
 
   # GET /tags or /tags.json
   def index
-    @tags = Tag.all
+    @tags = if params[:note_id]
+              Tag.joins(:notes).where(notes: { id: params[:note_id] })
+            else
+              Tag.all
+            end
   end
 
   # GET /tags/1 or /tags/1.json
