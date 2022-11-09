@@ -55,3 +55,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # gem "rack-mini-profiler", "~> 3.0"
 gem 'stimulus-rails'
 gem "view_component"
+
+gem 'cancancan'
