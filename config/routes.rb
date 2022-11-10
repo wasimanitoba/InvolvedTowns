@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :bookmarks
   resources :reminders
   resources :notes
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   mount Thredded::Engine => '/home'
 
   namespace :admin do
