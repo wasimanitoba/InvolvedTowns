@@ -8,7 +8,7 @@ class Ability
     #
     return if user.blank?
 
-    can :read, Note, user.id == user_id
+    can :read, Note, user_id: user.id
 
     return unless user.admin?
 
