@@ -10,15 +10,13 @@ class Users::SessionsController < Devise::SessionsController
     super
   end
 
-  # POST /resource/sign_in
-  def create
-    super
-
-    if params[:browser].inquiry.true?
-      redirect_to('https://d1bbb80ee87d02092a68044ad837c834a4809154.extensions.allizom.org/', allow_other_host: true)
-    elsif params[:browser].inquiry.false? || params[:browser].blank?
-      # redundant, but i like to remind myself that i'm *always* setting a string here and maybe it can just be `nil` or a boolean
-      redirect_to root_url, notice: 'Logged in!'
+    # POST /resource/sign_in
+    def create
+      if params[:browser]
+        redirect_to('https://0417c160d5a4b5b90b292ad98482c9856d1d2018.extensions.allizom.org/', allow_other_host: true)
+      elsif params[:browser].blank? || [false, ''].include?(params[:browser])
+        super
+      end
     end
   end
 

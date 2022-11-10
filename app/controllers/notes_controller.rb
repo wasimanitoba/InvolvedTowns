@@ -13,6 +13,8 @@ class NotesController < ApplicationController
 
   # GET /notes/new
   def new
+    redirect_to root_path if current_user.blank?
+
     @note = Note.new
   end
 
@@ -22,7 +24,13 @@ class NotesController < ApplicationController
 
   # POST /notes or /notes.json
   def create
-    @note = Note.new(note_params)
+    current_params = note_params
+    tag_attributes = current_params.delete(:tags)
+    @note          = Note.new(current_params)
+    if tag_attributes.present?
+      tags = tag_attributes.map { |tag| { user_id: tag[:user_id], title: tag[:title] } }
+      @note.tags << tags.map { |tag| Tag.create!(tag) }
+    end
 
     respond_to do |format|
       if @note.save
@@ -59,9 +67,21 @@ class NotesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_note
-      @note = Note.find(params[:id])
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_note
+    @note = Note.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def note_params
+    initial_params                = params.require(:note).permit(:user_id, :title, :content, :tags)
+    associated_tags_for_this_note = initial_params.delete(:tags)
+
+    return initial_params if associated_tags_for_this_note.blank?
+
+    initial_params[:tags] = associated_tags_for_this_note.split(',').map do |tag|
+      { user_id: current_user.id, title: tag }
     end
 
     # Only allow a list of trusted parameters through.
