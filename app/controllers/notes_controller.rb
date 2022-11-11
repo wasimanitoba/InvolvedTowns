@@ -1,32 +1,29 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: %i[ show edit update destroy ]
+  before_action :set_note, only: %i[show edit update destroy]
   load_and_authorize_resource
 
   # GET /notes or /notes.json
   def index
-    @notes = Note.all
+    @notes = filter_optionally(Note.all, :links, :related_link)
   end
 
   # GET /notes/1 or /notes/1.json
-  def show
-  end
+  def show; end
 
   # GET /notes/new
   def new
-    redirect_to root_path if current_user.blank?
-
     @note = Note.new
   end
 
   # GET /notes/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /notes or /notes.json
   def create
     current_params = note_params
     tag_attributes = current_params.delete(:tags)
     @note          = Note.new(current_params)
+
     if tag_attributes.present?
       tags = tag_attributes.map { |tag| { user_id: tag[:user_id], title: tag[:title] } }
       @note.tags << tags.map { |tag| Tag.create!(tag) }
@@ -68,6 +65,17 @@ class NotesController < ApplicationController
 
   private
 
+  def filter_optionally(collection, filter_field, param_name)
+    user_input = params[param_name]
+    return collection if user_input.blank?
+
+    filter_params = {}
+
+    filter_params[filter_field] = { id: user_input }
+
+    collection.joins(filter_field).where(**filter_params)
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_note
     @note = Note.find(params[:id])
@@ -83,9 +91,5 @@ class NotesController < ApplicationController
     initial_params[:tags] = associated_tags_for_this_note.split(',').map do |tag|
       { user_id: current_user.id, title: tag }
     end
-
-    # Only allow a list of trusted parameters through.
-    def note_params
-      params.require(:note).permit(:user_id, :title, :content)
-    end
+  end
 end
