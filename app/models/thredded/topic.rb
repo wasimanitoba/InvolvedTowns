@@ -30,7 +30,7 @@
 #  thredded_topics_title_fts                 (to_tsvector('english'::regconfig, title)) USING gist
 #
 module Thredded
-  class Topic < ActiveRecord::Base # rubocop:disable Metrics/ClassLength
+  class Topic < ApplicationRecord # rubocop:disable Metrics/ClassLength
     include Thredded::TopicCommon
     include Thredded::ContentModerationState
 
@@ -43,7 +43,7 @@ module Thredded
     scope :search_query, ->(query) { ::Thredded::TopicsSearch.new(query, self).search }
 
     scope :order_sticky_first, -> { order(sticky: :desc) }
-    scope :order_followed_first, ->(user) {
+    scope :order_followed_first, lambda { |user|
       user_follows = UserTopicFollow.arel_table
       joins(arel_table.join(user_follows, Arel::Nodes::OuterJoin)
               .on(user_follows[:topic_id].eq(arel_table[:id])
@@ -51,7 +51,7 @@ module Thredded
         .order(Arel::Nodes::Ascending.new(user_follows[:id].eq(nil)))
     }
 
-    scope :followed_by, ->(user) {
+    scope :followed_by, lambda { |user|
       joins(:user_follows)
         .where(thredded_user_topic_follows: { user_id: user.id })
     }
@@ -72,21 +72,20 @@ module Thredded
                counter_cache: true,
                touch: true,
                inverse_of: :topics
-    validates :messageboard_id, presence: true
 
     belongs_to :user_detail,
-               primary_key:   :user_id,
-               foreign_key:   :user_id,
-               inverse_of:    :topics,
+               primary_key: :user_id,
+               foreign_key: :user_id,
+               inverse_of: :topics,
                counter_cache: :topics_count,
                optional: true
 
     has_many :posts,
              autosave: true,
-             class_name:  'Thredded::Post',
+             class_name: 'Thredded::Post',
              foreign_key: :postable_id,
-             inverse_of:  :postable,
-             dependent:   :destroy
+             inverse_of: :postable,
+             dependent: :destroy
     has_one :first_post, # rubocop:disable Rails/InverseOf
             -> { order_oldest_first },
             class_name: 'Thredded::Post',
@@ -120,7 +119,6 @@ module Thredded
     after_commit :handle_messageboard_change_after_commit,
                  on: :update,
                  if: -> { previous_changes.include?('messageboard_id') }
-
 
     # Finds the topic by its slug or ID, or raises Thredded::Errors::TopicNotFound.
     # @param slug_or_id [String]
@@ -187,6 +185,7 @@ module Thredded
 
     def update_last_user_and_time_from_last_post!
       return if destroyed?
+
       scope = posts.order_newest_first
       scope = scope.moderation_state_visible_to_all if moderation_state_visible_to_all?
       last_post = scope.select(:user_id, :created_at).first

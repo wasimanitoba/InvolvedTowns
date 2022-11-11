@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: bookmarks
@@ -19,6 +21,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Bookmark < ApplicationRecord
-  validates_uniqueness_of :url, scope: :user_id
+  validates :url, uniqueness: { scope: :user_id }
   belongs_to :user
 end

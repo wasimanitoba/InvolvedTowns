@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tags
@@ -18,7 +20,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Tag < ApplicationRecord
-  validates_uniqueness_of :title, scope: :user_id
+  validates :title, uniqueness: { scope: :user_id }
 
   belongs_to :user
 end
