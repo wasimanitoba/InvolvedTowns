@@ -15,7 +15,7 @@ module Thredded
       @locked = params[:locked] || false
       @sticky = params[:sticky] || false
       @content = params[:content]
-      @user = params[:user] || fail('user is required')
+      @user = params[:user] || raise('user is required')
       @messageboard = params[:messageboard]
     end
 
@@ -45,7 +45,7 @@ module Thredded
         locked: locked,
         sticky: sticky,
         user: non_null_user,
-        categories: topic_categories,
+        categories: topic_categories
       )
     end
 
@@ -58,7 +58,7 @@ module Thredded
     end
 
     def submit_path
-      Thredded::UrlsHelper.url_for([messageboard, topic, only_path: true])
+      Thredded::UrlsHelper.url_for([messageboard, topic, { only_path: true }])
     end
 
     def preview_path

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotesController < ApplicationController
   before_action :set_note, only: %i[show edit update destroy]
   load_and_authorize_resource
@@ -31,7 +33,7 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if @note.save
-        format.html { redirect_to note_url(@note), notice: "Note was successfully created." }
+        format.html { redirect_to note_url(@note), notice: 'Note was successfully created.' }
         format.json { render :show, status: :created, location: @note }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +46,7 @@ class NotesController < ApplicationController
   def update
     respond_to do |format|
       if @note.update(note_params)
-        format.html { redirect_to note_url(@note), notice: "Note was successfully updated." }
+        format.html { redirect_to note_url(@note), notice: 'Note was successfully updated.' }
         format.json { render :show, status: :ok, location: @note }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,7 +60,7 @@ class NotesController < ApplicationController
     @note.destroy
 
     respond_to do |format|
-      format.html { redirect_to notes_url, notice: "Note was successfully destroyed." }
+      format.html { redirect_to notes_url, notice: 'Note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

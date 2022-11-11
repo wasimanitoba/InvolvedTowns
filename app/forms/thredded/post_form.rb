@@ -4,6 +4,7 @@ module Thredded
   class PostForm
     attr_accessor :websites
     attr_reader :post, :topic
+
     delegate :id,
              :persisted?,
              :content,
@@ -31,7 +32,7 @@ module Thredded
     end
 
     def submit_path
-      Thredded::UrlsHelper.url_for([@messageboard, @topic, @post, only_path: true])
+      Thredded::UrlsHelper.url_for([@messageboard, @topic, @post, { only_path: true }])
     end
 
     def preview_path
