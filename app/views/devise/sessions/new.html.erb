@@ -18,12 +18,10 @@
     </div>
   <% end %>
 
-  <% if @browser == true %>
-    <div class="field">
-      <%= check_box_tag :browser, true %>
-      <%= label_tag :browser %>
-    </div>
-  <% end %>
+  <div class="field hidden-none-display">
+    <%= check_box_tag :browser, 'browser', @browser %>
+    <%= label_tag :app %>
+  </div>
 
   <div class="actions">
     <%= f.submit "Log in" %>
