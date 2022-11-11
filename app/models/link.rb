@@ -1,24 +1,25 @@
 # == Schema Information
 #
-# Table name: notes
+# Table name: links
 #
 #  id         :bigint           not null, primary key
-#  content    :text
-#  title      :string
+#  query      :string
+#  url        :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :bigint           not null
 #
 # Indexes
 #
-#  index_notes_on_user_id  (user_id)
+#  index_links_on_user_id  (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Note < ApplicationRecord
+class Link < ApplicationRecord
   belongs_to :user
+
+  has_many :notes, through: :links_notes, dependent: :restrict_with_exception
   has_many :links_notes, dependent: :destroy
-  has_many :links, through: :links_notes, dependent: :destroy
 end
