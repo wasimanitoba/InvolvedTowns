@@ -9,6 +9,17 @@
   <strong>User:</strong>
   <%= @tag.user_id %>
 </p>
+<p>
+  <strong>Subjects:</strong>
+    <%- @tag.subjects.each do |subject| %>
+      <%= subject %>
+    <%- end %></p>
+<p>
+  <strong>Objects:</strong>
+  <%- @tag.objects.each do |object| %>
+    <%= object %>
+  <%- end %>
+</p>
 
-<%= link_to 'Edit', edit_tag_path(@tag) %> |
-<%= link_to 'Back', tags_path %>
+<%= link_to 'Edit', Rails.application.routes.url_helpers.edit_user_tag_path(user_id: @tag.user_id, id: @tag.id) %> |
+<%= link_to 'Back', user_tags_path(@tag.user_id) %>

@@ -1,4 +1,4 @@
-<%= form_with(model: tag, local: true) do |form| %>
+<%= form_with(model: [current_user, tag], local: true) do |form| %>
   <% if tag.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(tag.errors.count, "error") %> prohibited this tag from being saved:</h2>
@@ -16,7 +16,17 @@
     <%= form.text_field :title %>
   </div>
 
-  <div class="field">
+  <%= form.fields_for :object_links do |subject_subform| %>
+    <div class="field">
+      <p>Link this tag to another:</p>
+      <%= subject_subform.label :new_related_tag %>
+      <%= subject_subform.text_field :new_related_tag %>
+      <%= subject_subform.label :existing_related_tag %>
+      <%= subject_subform.select :existing_related_tag, current_user.tags, {}, multiple: true %>
+    </div>
+
+  <%- end %>
+  <div class="field hidden-none-display">
     <%= form.label :user_id %>
     <%= form.text_field :user_id %>
   </div>
