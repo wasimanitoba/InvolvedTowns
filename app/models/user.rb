@@ -37,6 +37,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  has_many :tags, dependent: :destroy
+
   before_validation do
     self.name = email if name.blank?
   end

@@ -20,18 +20,16 @@ RSpec.describe '/tags', type: :request do
   # adjust the attributes here as well.
 
   let(:user) { User.create!(email: 'fake2@fake.com', password: 'example', name: 'test user') }
-  let(:valid_attributes) { { user_id: user.id, title: 'TagName' } }
+  let(:valid_attributes) { { user_id: user.id, title: "tag_#{rand}" } }
 
-  let(:invalid_attributes) { { title: nil, user_id: user.id } }
+  let(:invalid_attributes) { { title: nil, user_id: nil } }
 
-  before do
-    sign_in user
-  end
+  before { sign_in user }
 
   describe 'GET /index' do
     it 'renders a successful response' do
       Tag.create! valid_attributes
-      get user_tags_url(user)
+      get user_tags_url(user.id)
       expect(response).to be_successful
     end
   end
@@ -69,7 +67,8 @@ RSpec.describe '/tags', type: :request do
 
       it 'redirects to the created tag' do
         post user_tags_url(user), params: { tag: valid_attributes }
-        expect(response).to redirect_to(user_tag_url(Tag.last, user))
+        current_tag = Tag.last
+        expect(response).to redirect_to(user_tag_url(id: current_tag.id, user_id: current_tag.user_id))
       end
     end
 
