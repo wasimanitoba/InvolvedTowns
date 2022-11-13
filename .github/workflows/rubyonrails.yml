@@ -38,7 +38,7 @@ jobs:
       - name: Set up database schema
         run: bin/rails db:schema:load
       - name: webpack
-        run: webpack
+        run: webpack --mode=production
       # Add or replace test runners here
       - name: Run tests
         run: bin/rake
