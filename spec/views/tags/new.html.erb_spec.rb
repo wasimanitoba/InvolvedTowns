@@ -11,7 +11,7 @@ RSpec.describe 'tags/new', type: :view do
     sign_in user
   end
 
-  it 'renders new tag form' do
+  pending 'renders new tag form' do
     render
 
     assert_select 'form[action=?][method=?]', user_tags_path(user_id: tag.user_id), 'post' do
