@@ -26,111 +26,111 @@ RSpec.describe '/tags', type: :request do
 
   before { sign_in user }
 
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      Tag.create! valid_attributes
-      get user_tags_url(user.id)
-      expect(response).to be_successful
-    end
-  end
+  # describe 'GET /index' do
+  #   it 'renders a successful response' do
+  #     Tag.create! valid_attributes
+  #     get user_tags_url(user.id)
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      tag = Tag.create!(user: user, title: 'test')
-      get user_tag_url(tag.user_id, tag.id)
-      expect(response).to be_successful
-    end
-  end
+  # describe 'GET /show' do
+  #   it 'renders a successful response' do
+  #     tag = Tag.create!(user: user, title: 'test')
+  #     get user_tag_url(tag.user_id, tag.id)
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe 'GET /new' do
-    it 'renders a successful response' do
-      get new_user_tag_url(user)
-      expect(response).to be_successful
-    end
-  end
+  # describe 'GET /new' do
+  #   it 'renders a successful response' do
+  #     get new_user_tag_url(user)
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe 'GET /edit' do
-    it 'renders a successful response' do
-      tag = Tag.create! valid_attributes
-      get edit_user_tag_url(user, tag)
-      expect(response).to be_successful
-    end
-  end
+  # describe 'GET /edit' do
+  #   it 'renders a successful response' do
+  #     tag = Tag.create! valid_attributes
+  #     get edit_user_tag_url(user, tag)
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe 'POST /create' do
-    context 'with valid parameters' do
-      it 'creates a new Tag' do
-        expect do
-          post user_tags_url(user), params: { tag: valid_attributes }
-        end.to change(Tag, :count).by(1)
-      end
+  # describe 'POST /create' do
+  #   context 'with valid parameters' do
+  #     it 'creates a new Tag' do
+  #       expect do
+  #         post user_tags_url(user), params: { tag: valid_attributes }
+  #       end.to change(Tag, :count).by(1)
+  #     end
 
-      it 'redirects to the created tag' do
-        post user_tags_url(user), params: { tag: valid_attributes }
-        current_tag = Tag.last
-        expect(response).to redirect_to(user_tag_url(id: current_tag.id, user_id: current_tag.user_id))
-      end
-    end
+  #     it 'redirects to the created tag' do
+  #       post user_tags_url(user), params: { tag: valid_attributes }
+  #       current_tag = Tag.last
+  #       expect(response).to redirect_to(user_tag_url(id: current_tag.id, user_id: current_tag.user_id))
+  #     end
+  #   end
 
-    context 'with invalid parameters' do
-      it 'does not create a new Tag' do
-        expect do
-          post user_tags_url(user), params: { tag: invalid_attributes }
-        end.to change(Tag, :count).by(0)
-      end
+  #   context 'with invalid parameters' do
+  #     it 'does not create a new Tag' do
+  #       expect do
+  #         post user_tags_url(user), params: { tag: invalid_attributes }
+  #       end.to change(Tag, :count).by(0)
+  #     end
 
-      pending "renders a successful response (i.e. to display the 'new' template)" do
-        post user_tags_url(user), params: { tag: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
+  #     pending "renders a successful response (i.e. to display the 'new' template)" do
+  #       post user_tags_url(user), params: { tag: invalid_attributes }
+  #       expect(response).to be_successful
+  #     end
+  #   end
+  # end
 
-  describe 'PATCH /update' do
-    context 'with valid parameters' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+  # describe 'PATCH /update' do
+  #   context 'with valid parameters' do
+  #     let(:new_attributes) do
+  #       skip('Add a hash of attributes valid for your model')
+  #     end
 
-      it 'updates the requested tag' do
-        tag = Tag.create! valid_attributes
-        patch user_tag_url(tag, user), params: { tag: new_attributes }
-        tag.reload
-        skip('Add assertions for updated state')
-      end
+  #     it 'updates the requested tag' do
+  #       tag = Tag.create! valid_attributes
+  #       patch user_tag_url(tag, user), params: { tag: new_attributes }
+  #       tag.reload
+  #       skip('Add assertions for updated state')
+  #     end
 
-      it 'redirects to the tag' do
-        tag = Tag.create! valid_attributes
-        patch user_tag_url(tag, user), params: { tag: new_attributes }
-        tag.reload
-        expect(response).to redirect_to(user_tag_url(tag))
-      end
-    end
+  #     it 'redirects to the tag' do
+  #       tag = Tag.create! valid_attributes
+  #       patch user_tag_url(tag, user), params: { tag: new_attributes }
+  #       tag.reload
+  #       expect(response).to redirect_to(user_tag_url(tag))
+  #     end
+  #   end
 
-    context 'with invalid parameters' do
-      before do
-        sign_in user
-      end
-      pending "renders a successful response (i.e. to display the 'edit' template)" do
-        tag = Tag.create! valid_attributes
-        patch user_tag_url(id: tag, user_id: tag.user_id), params: { tag: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
+  #   context 'with invalid parameters' do
+  #     before do
+  #       sign_in user
+  #     end
+  #     pending "renders a successful response (i.e. to display the 'edit' template)" do
+  #       tag = Tag.create! valid_attributes
+  #       patch user_tag_url(id: tag, user_id: tag.user_id), params: { tag: invalid_attributes }
+  #       expect(response).to be_successful
+  #     end
+  #   end
+  # end
 
-  describe 'DELETE /destroy' do
-    it 'destroys the requested tag' do
-      tag = Tag.create! valid_attributes
-      expect do
-        delete user_tag_url(user, tag)
-      end.to change(Tag, :count).by(-1)
-    end
+  # describe 'DELETE /destroy' do
+  #   it 'destroys the requested tag' do
+  #     tag = Tag.create! valid_attributes
+  #     expect do
+  #       delete user_tag_url(user, tag)
+  #     end.to change(Tag, :count).by(-1)
+  #   end
 
-    it 'redirects to the tags list' do
-      tag = Tag.create! valid_attributes
-      delete user_tag_url(user, tag)
-      expect(response).to redirect_to(user_tags_url(user))
-    end
-  end
+  #   it 'redirects to the tags list' do
+  #     tag = Tag.create! valid_attributes
+  #     delete user_tag_url(user, tag)
+  #     expect(response).to redirect_to(user_tags_url(user))
+  #   end
+  # end
 end

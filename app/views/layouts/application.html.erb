@@ -10,12 +10,12 @@
     <link href="https://unpkg.com/@blueprintjs/icons@^4.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
     <link href="https://unpkg.com/@blueprintjs/core@^4.0.0/lib/css/blueprint.css" rel="stylesheet" />
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_packs_with_chunks_tag('application', 'data-turbolinks-track': 'reload') %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
   <body class=<%= @page_name || 'default_page_type' %>>
     <%= render('layouts/partials/navbar') %>
     <%= yield %>
-    <%= javascript_packs_with_chunks_tag('chat') %>     <%# This has to be in the body instead of the head? %>
+    <%= javascript_include_tag('chat') %>     <%# This has to be in the body instead of the head? %>
     <div id="react-chat-container"></div>
   </body>
 </html>
