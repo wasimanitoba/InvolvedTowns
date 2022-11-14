@@ -51,7 +51,7 @@ class StackBiblio extends React.Component {
   async getAllNotes() { return await this.state.db.allDocs({ include_docs: true, descending: true }); }
 
   // TODO: use an API token instead or set up CORS so that the password can only be used by StackBiblio.com
-  // TODO: ensure that we can use host URL instead of `localhost` 
+  // TODO: ensure that we can use host URL instead of `localhost`
   async sync() { this.state.db.replicate.to('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development'); }
 
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
@@ -83,7 +83,7 @@ class StackBiblio extends React.Component {
       <div>
         <filter-input aria-owns="entries" class={'flex justify-apart'}>
           <input placeholder="Filter" type="text" autoFocus autoComplete="off" />
-          <MultiSelect2
+          {/* <MultiSelect2
             className={'tagsHolder'}
             itemPredicate={this.state.tagsFilter}
             itemRenderer={this.renderSelection}
@@ -102,7 +102,7 @@ class StackBiblio extends React.Component {
             resetOnSelect={this.clearTags}
             selectedItems={this.state.selectedTags}
             tagRenderer={(item) => { return (item.title); }}
-          />
+          /> */}
         </filter-input>
         <ul id="entries" data-filter-list>
           {this.state.entries.map((entry) => { return <LibraryEntry entry={entry} key={entry.id} /> })}

@@ -2,5 +2,5 @@
 
 <%= render 'form', collection: @collection %>
 
-<%= link_to 'Show', @collection %> |
-<%= link_to 'Back', collections_path %>
+<%= link_to 'Show', user_collection_path(id: @collection.id, user_id: @collection.user_id) %> |
+<%= link_to 'Back', user_collections_path(user_id: @collection.user_id) %>

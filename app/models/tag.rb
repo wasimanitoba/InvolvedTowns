@@ -21,7 +21,7 @@
 #
 class Tag < ApplicationRecord
   validates :title, uniqueness: { scope: :user_id }
-  validates_presence_of :title
+  validates :title, presence: true
 
   has_many :subject_links, foreign_key: :subject_id, class_name: 'LinkedTag', dependent: :destroy, inverse_of: :subject
   has_many :object_links, foreign_key: :object_id, class_name: 'LinkedTag', dependent: :destroy, inverse_of: :object

@@ -7,6 +7,9 @@ import { application } from "./application"
 import FilterController from "./filter_controller"
 application.register("filter", FilterController)
 
+import ImportController from "./import_controller"
+application.register("import", ImportController)
+
 import StackbiblioController from "./stackbiblio_controller"
 application.register("stackbiblio", StackbiblioController)
 

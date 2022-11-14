@@ -23,7 +23,7 @@ module Thredded
 
       post_params[:content]  = Thredded::ContentFormatter.quote_content(post_params.delete(:quote_post).content) if post_params.include?(:quote_post)
       attribute_hash         = { user: (user unless user.thredded_anonymous?), messageboard: topic.messageboard }
-      post_params[:websites] = post_params[:websites].split(',') if post_params[:websites]
+      post_params[:bulk_website_list] = post_params[:bulk_website_list].split(',') if post_params[:bulk_website_list]
       @post.attributes       = post_params.merge(attribute_hash)
     end
 

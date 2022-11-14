@@ -16,6 +16,24 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.new
   end
 
+  def bulk_upload
+    sites = remote_link_params[:bulk_website_list].split(/\n|,/)
+
+    successfully_saved_all_links = sites.all? do |site|
+      @bookmark = Bookmark.create(url: site, user_id: current_user.id)
+      @bookmark.save
+    end
+    respond_to do |format|
+      if successfully_saved_all_links
+        format.html { redirect_to user_bookmarks_url(current_user), notice: 'Link was successfully created.' }
+        format.json { render :show, status: :created, location: @bookmark }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { msg: 'error not implemented' }, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /bookmarks/1/edit
   def edit; end
 
@@ -52,7 +70,7 @@ class BookmarksController < ApplicationController
     @bookmark.destroy
 
     respond_to do |format|
-      format.html { redirect_to bookmarks_url, notice: 'Bookmark was successfully destroyed.' }
+      format.html { redirect_to user_bookmarks_url, notice: 'Bookmark was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -68,4 +86,9 @@ class BookmarksController < ApplicationController
   def bookmark_params
     params.require(:bookmark).permit(:url, :title, :user_id)
   end
+
+    # for remote forms
+    def remote_link_params
+      params.require(:bookmark).permit(:url, :title, :user_id, :bulk_website_list)
+    end
 end

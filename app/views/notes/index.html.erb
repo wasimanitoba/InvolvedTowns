@@ -18,9 +18,9 @@
         <td><%= note.user_id %></td>
         <td><%= note.title %></td>
         <td><%= note.content %></td>
-        <td><%= link_to 'Show', note %></td>
-        <td><%= link_to 'Edit', edit_note_path(note) %></td>
-        <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', user_note_path(id: note.id, user_id: note.user_id) %></td>
+        <td><%= link_to 'Edit', edit_user_note_path(id: note.id, user_id: note.user_id) %></td>
+        <td><%= link_to 'Destroy', user_note_path(id: note.id, user_id: note.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Note', new_note_path %>
+<%= link_to 'New Note', new_user_note_path %>

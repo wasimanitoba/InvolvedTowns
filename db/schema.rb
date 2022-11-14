@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_11_042012) do
+ActiveRecord::Schema.define(version: 2022_11_13_235956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 2022_11_11_042012) do
     t.bigint "collection_id", null: false
     t.index ["bookmark_id", "collection_id"], name: "index_bookmarks_collections_on_bookmark_id_and_collection_id"
     t.index ["collection_id", "bookmark_id"], name: "index_bookmarks_collections_on_collection_id_and_bookmark_id"
+  end
+
+  create_table "bookmarks_notes", id: false, force: :cascade do |t|
+    t.bigint "bookmark_id", null: false
+    t.bigint "note_id", null: false
+    t.index ["bookmark_id", "note_id"], name: "index_bookmarks_notes_on_bookmark_id_and_note_id"
+    t.index ["note_id", "bookmark_id"], name: "index_bookmarks_notes_on_note_id_and_bookmark_id"
   end
 
   create_table "bookmarks_reminders", id: false, force: :cascade do |t|
@@ -74,22 +81,6 @@ ActiveRecord::Schema.define(version: 2022_11_11_042012) do
     t.string "predicate", null: false
     t.index ["object_id"], name: "index_linked_tags_on_object_id"
     t.index ["subject_id"], name: "index_linked_tags_on_subject_id"
-  end
-
-  create_table "links", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.string "url"
-    t.string "query"
-    t.index ["user_id"], name: "index_links_on_user_id"
-  end
-
-  create_table "links_notes", id: false, force: :cascade do |t|
-    t.bigint "note_id", null: false
-    t.bigint "link_id", null: false
-    t.index ["link_id", "note_id"], name: "index_links_notes_on_link_id_and_note_id"
-    t.index ["note_id", "link_id"], name: "index_links_notes_on_note_id_and_link_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -388,12 +379,11 @@ ActiveRecord::Schema.define(version: 2022_11_11_042012) do
   end
 
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "bookmarks_notes", "bookmarks"
+  add_foreign_key "bookmarks_notes", "notes"
   add_foreign_key "collections", "users"
   add_foreign_key "linked_tags", "tags", column: "object_id"
   add_foreign_key "linked_tags", "tags", column: "subject_id"
-  add_foreign_key "links", "users"
-  add_foreign_key "links_notes", "links"
-  add_foreign_key "links_notes", "notes"
   add_foreign_key "notes", "users"
   add_foreign_key "notes_tags", "notes"
   add_foreign_key "notes_tags", "tags"

@@ -4,7 +4,7 @@ module Thredded
   class TopicForm
     include ActiveModel::Model
 
-    attr_accessor :title, :websites, :category_ids, :locked, :sticky, :content
+    attr_accessor :title, :bulk_website_list, :category_ids, :locked, :sticky, :content
     attr_reader :user, :messageboard
 
     validate :validate_children

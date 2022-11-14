@@ -39,6 +39,8 @@ class User < ApplicationRecord
 
   has_many :tags, dependent: :destroy
 
+  delegate :to_s, to: :name
+
   before_validation do
     self.name = email if name.blank?
   end
