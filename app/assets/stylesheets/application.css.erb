@@ -19,8 +19,11 @@
 @import "@blueprintjs/select/lib/css/blueprint-select.css";
 @import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 
+.half-half { display: flex; }
+.half-half > .left, .half-half > .right { width: 50%; }
+
 .flex { display: flex; }
-.hidden-none-display, form div input.hidden-none-display { display: none; }
+.hidden-none-display, form div input.hidden-none-display { display: none !important; }
 ul#sources-list p span,
 ul#sources-list p  {
   align-items: center;
@@ -47,6 +50,7 @@ ul#sources-list p  {
 #usersFilterList > ul > li[hidden] { display: none; }
 .button-like-details ul { background: white; z-index: 20; }
 .mt-1 { margin-top: 1em; }
+
 .button-like, .button-like-details {
   align-items: center;
   appearance: none;
@@ -451,6 +455,10 @@ details.chat-toggle > summary {
   background: inherit;
   /* color: white;  */
   width: 90%;
+}
+
+form.post-actions details textarea {
+  width: 50em;
 }
 .message-box .message-submit {
   font-size: 10px;

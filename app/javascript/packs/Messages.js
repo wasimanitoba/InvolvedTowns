@@ -34,7 +34,9 @@ class Message extends React.Component {
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            this.state.db.remove(this.state.id, this.state.key);
+            alert('not implemented!')
+            console.log(this.state.db, this.state.id, this.state.key)
+            // this.state.db.remove(this.state.id, this.state.key);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()

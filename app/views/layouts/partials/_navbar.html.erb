@@ -1,32 +1,11 @@
 
 <div class="flex justify-apart">
   <span class="flex">
-    <div class="button-like">
-      <a href="/">InvolvedTowns Forums</a>
-    </div>
-    <details>
-      <summary class="button-like">StackBiblio</summary>
-      <ul>
-        <li><%= link_to('My Offline Library', '/library') %></li>
-        <%- if current_user %>
-          <li><%= link_to('My Notes', Rails.application.routes.url_helpers.user_notes_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('My Bookmarks', Rails.application.routes.url_helpers.user_bookmarks_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('My Collections', Rails.application.routes.url_helpers.user_collections_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('My Links', Rails.application.routes.url_helpers.user_links_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('My Reminders', Rails.application.routes.url_helpers.user_reminders_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('My Tags', Rails.application.routes.url_helpers.user_tags_path(user_id: current_user.id)) %></li>
-          <li><%= link_to('Messages', Rails.application.routes.url_helpers.messages_path) %></li>
-        <%- end %>
-      </ul>
-    </details>
+    <a class="button-like" href="/">TownHalls</a>
+     <%= link_to('Local', '/library', class: "button-like") %>
+     <%= link_to('Cloud', Rails.application.routes.url_helpers.cloud_library_path, class: "button-like") %>
     <%- if current_user&.admin %>
-      <details>
-        <summary class="button-like">Admin</summary>
-        <ul>
-          <li><%= link_to('Users', Rails.application.routes.url_helpers.admin_users_path) %></li>
-          <li><%= link_to('Posts', Rails.application.routes.url_helpers.admin_posts_path) %></li>
-        </ul>
-      </details>
+       <%= link_to 'Admin', Rails.application.routes.url_helpers.admin_path, class: "button-like" %>
     <%- end %>
   </span>
   <span>

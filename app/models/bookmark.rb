@@ -22,5 +22,14 @@
 #
 class Bookmark < ApplicationRecord
   validates :url, uniqueness: { scope: :user_id }
+  validates :url, presence: true
+
   belongs_to :user
+
+  has_many :bookmarks_notes, dependent: :destroy
+  has_many :notes, through: :bookmarks_notes, dependent: :restrict_with_exception
+
+  def to_s
+    "#{title.present? ? "#{title}:" : ''}#{url}"
+  end
 end

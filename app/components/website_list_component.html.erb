@@ -1,0 +1,30 @@
+<% if submit_button == true %>
+  <%= form_for :bookmark, remote: true do |f| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <div data-controller="submission">
+      <div class="flex">
+        <span class="button-like" data-action="click->submission#addSourceLink">Add</span>
+        <textarea
+        data-submission-target="sourceToAdd"
+        placeholder=<%= placeholder_text %>
+        autocomplete='off'></textarea>
+      </div>
+      <ul id='sources-list' data-submission-target='sourcesList'></ul>
+      <%= f.text_field :bulk_website_list, data: { 'submission-target': 'websiteList' }, class: 'hidden-none-display' %>
+      <%= f.submit %>
+    </div>
+  <% end %>
+<% else %>
+  <div data-controller="submission">
+    <div class="flex">
+      <span class="button-like" data-action="click->submission#addSourceLink">Add</span>
+      <input
+        data-submission-target="sourceToAdd"
+        placeholder=<%= placeholder_text %>
+        autocomplete='off'>
+    </div>
+    <ul id='sources-list' data-submission-target='sourcesList'></ul>
+    <div class='hidden-none-display'>
+      <%= text_field :bulk_website_list, data: { 'submission-target': 'websiteList' } %>
+    </div>
+  <% end %>

@@ -1,3 +1,10 @@
-<div class="flex">
-  <%= render SyncerComponent.new %>
+<div class="flex justify-apart">
+ <%- if active_user %>
+    <%= link_to 'Sync your notes', sync_library_path %>
+ <%- else %>
+    <%= link_to 'To sync your notes, create an account!', new_user_registration_path %>
+ <%- end %>
+  <%= link_to('Full Library', '/library') %>
+  <%= link_to 'Offline Note List', offline_note_list_path %>
+  <%= link_to 'Import', notes_import_path %>
 </div>

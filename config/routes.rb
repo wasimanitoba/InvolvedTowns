@@ -4,37 +4,29 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   mount Thredded::Engine => '/home'
 
-  namespace :admin do
-    resources :users do
-      resources :tags
-      resources :links
-      resources :collections
-      resources :bookmarks
-      resources :reminders
-      resources :notes
-      resources :posts
-    end
+  get '/admin', to: 'admin#index'
 
-    resources :tags
-    resources :links
-    resources :collections
-    resources :bookmarks
-    resources :reminders
-    resources :notes
-    resources :posts
+  namespace :admin do
+    resources :tags, :collections, :bookmarks, :reminders, :notes, :posts
+
+    resources :users do
+      resources :tags, :collections, :bookmarks, :reminders, :notes, :posts
+    end
   end
 
   resources :users do
-    resources :tags
-    resources :links
-    resources :collections
-    resources :bookmarks
-    resources :reminders
-    resources :notes
-    resources :posts
+    resources :tags, :collections, :bookmarks, :reminders, :notes, :posts
   end
 
-  get '/library', to: 'stackbiblio#index'
+  scope('/library') do
+    get '/import', to: 'stackbiblio#import', as: :notes_import
+    post '/import', to: 'bookmarks#bulk_upload'
+    get '/cloud', to: 'stackbiblio#cloud_library', as: :cloud_library
+    get '/list', to: 'stackbiblio#list', as: :offline_note_list
+    get '/sync', to: 'stackbiblio#sync', as: :sync_library
+    get '/', to: 'stackbiblio#index'
+  end
+
   get '/messaging', to: 'stackbiblio#messaging', as: :messages
   get '/me', to: 'users#me', as: :me
   get '/about', to: 'home#index'

@@ -1,0 +1,25 @@
+<h1>Import to your Library</h1>
+<div data-controller="tab" class="tab-container">
+  <div role="tablist">
+    <button type="button" id="tab-two" role="tab" tabindex="-1">Import Notes</button>
+    <button type="button" id="tab-one" role="tab" aria-selected="true">Add Bookmarks</button>
+  </div>
+  <div role="tabpanel" aria-labelledby="tab-one">
+    <p>Paste URLs</p>
+    <%= render WebsiteListComponent.new(placeholder: 'Add Bookmarks', submit_button: true) %>
+  </div>
+  <div role="tabpanel" aria-labelledby="tab-two" hidden>
+    <p>Bulk Import Note files</p>
+    <div class="flex half-half">
+      <div class="left">
+      <h4>JSON</h4>
+        <p>Upload File</p>
+        <p>Copy and Paste</p>
+      </div>
+      <div class="right">
+        <h1>Text Files</h1>
+        <p>Bulk Upload</p>
+      </div>
+    </div>
+  </div>
+</div>

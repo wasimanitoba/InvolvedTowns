@@ -1,4 +1,4 @@
-<%= form_with(model: bookmark, local: true) do |form| %>
+<%= form_with(model: [current_user, bookmark], local: true) do |form| %>
   <% if bookmark.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(bookmark.errors.count, "error") %> prohibited this bookmark from being saved:</h2>
@@ -21,7 +21,7 @@
     <%= form.text_field :title %>
   </div>
 
-  <div class="field">
+  <div class="field hidden-none-display">
     <%= form.label :user_id %>
     <%= form.text_field :user_id %>
   </div>

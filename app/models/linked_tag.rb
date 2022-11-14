@@ -20,7 +20,7 @@
 #  fk_rails_...  (subject_id => tags.id)
 #
 class LinkedTag < ApplicationRecord
-  validates_presence_of :predicate
+  validates :predicate, presence: true
 
   belongs_to :object, class_name: 'Tag', inverse_of: :objects
   belongs_to :subject, class_name: 'Tag', inverse_of: :subjects

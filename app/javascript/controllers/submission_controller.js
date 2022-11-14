@@ -19,12 +19,12 @@ export default class extends Controller {
   }
 
   addSourceLink() {
-    const path = this.retriveLink();
+    const path = this.retrieveLink();
 
     if (path) { this.sourcesListTarget.append(this.linkListItem(path)); }
   }
 
-  retriveLink() {
+  retrieveLink() {
     const url  = this.sourceToAddTarget.value;
     const path = this.stripPrefixAndTrailingSlashes(url);
 
