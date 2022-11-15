@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
 import '@github/filter-input-element';
-import { MenuItem } from "@blueprintjs/core";
+import { MenuItem, Icon } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
 const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
@@ -29,20 +29,20 @@ const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, qu
 class List extends React.Component {
   constructor(props) {
     super(props);
-    this.renderSelection    = renderSelection.bind(this);
-    this.setSelectedTag     = this.setSelectedTag.bind(this);
+    this.renderSelection = renderSelection.bind(this);
+    this.setSelectedTag = this.setSelectedTag.bind(this);
     this.setSelectedEntries = this.setSelectedEntries.bind(this);
-    this.clearTags          = this.clearTags.bind(this);
-    const db                = new PouchDB('stackbiblio-development');
-    const tagDB             = new PouchDB('tag-store-development');
+    this.clearTags = this.clearTags.bind(this);
+    const db = new PouchDB('stackbiblio-development');
+    const tagDB = new PouchDB('tag-store-development');
 
     this.state = { db, tagDB, notes: [], entries: [], tags: [], selectedTags: [] };
   }
 
   async componentDidMount() {
-    const notes   = await this.getAllNotes();
-    const tags    = await this.getAllTags();
-    this.setState({ entries:notes.rows, tags: tags.rows || [] });
+    const notes = await this.getAllNotes();
+    const tags = await this.getAllTags();
+    this.setState({ entries: notes.rows, tags: tags.rows || [] });
     this.render()
   }
 
@@ -57,12 +57,12 @@ class List extends React.Component {
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
   setSelectedTag = (userSelectedTag) => {
-    const selectedTags   = this.state.selectedTags;
+    const selectedTags = this.state.selectedTags;
     const existingTitles = selectedTags.map((entry) => { return entry.title; })
 
     if (!existingTitles.includes(userSelectedTag.title)) {
       selectedTags.push(userSelectedTag);
-      let tags       = this.state.tags;
+      let tags = this.state.tags;
       let unselected = tags.splice(tags.indexOf(userSelectedTag.title), 1);
       this.setState({ selectedTags: selectedTags, tags: unselected });
     }
@@ -71,7 +71,7 @@ class List extends React.Component {
 
   setSelectedEntries = (event) => {
     let selectedEntries = this.state.entries.filter((entry) => {
-      let titles        = entry.tags.map((tag) => { return tag.title });
+      let titles = entry.tags.map((tag) => { return tag.title });
       return titles.includes(event.title);
     });
     this.setState({ entries: selectedEntries });
@@ -105,7 +105,7 @@ class List extends React.Component {
           /> */}
         </filter-input>
         <ul id="entries" data-filter-list>
-          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry.id} /> })}
+          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry._id} rev={entry._rev} /> })}
         </ul>
       </div>
     );
@@ -121,10 +121,23 @@ class ListEntry extends React.Component {
     };
   }
   render() {
+    const db = this.state.db;
+    const key = this.state.key;
+    const id = this.state.id;
     return (
       <li>
-        <ReactMarkdown>{this.state.content}</ReactMarkdown>
-        <sub hidden><sup>{this.state.tags.map((tag) => { return `${tag.title} ${tag.category}` })}</sup></sub>
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          console.log({id, key});
+          this.state.db.remove(id, key);
+          // let's add a confirmation modal here
+          this.setState({ deleted: true })
+          this.render()
+        }}>
+          <ReactMarkdown>{this.state.content}</ReactMarkdown>
+          <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
+        </form>
+        {/* <sub hidden><sup>{this.state.tags.map((tag) => { return `${tag.title} ${tag.category}` })}</sup></sub> */}
       </li>
     )
   }

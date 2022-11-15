@@ -4,7 +4,7 @@ import { Icon, Tag } from "@blueprintjs/core";
 
 const Messages = (props) => {
   const messages = (props.entries.map((doc) => {
-    return <Message db={props.db} key={doc.key} tags={doc.tags || []} timestamp={doc.timestamp} value={doc.content} notes={doc.notes} />
+    return <Message db={props.db} tags={doc.tags || []} doc={doc} />
   }));
 
   messages.reverse();
@@ -14,7 +14,12 @@ const Messages = (props) => {
 class Message extends React.Component {
   constructor(props) {
     super(props);
-    let { db, id, timestamp, tags, value, notes, rev } = props;
+    let { db, tags, doc } = props;
+    let id = doc._id;
+    let rev = doc._rev;
+    let timestamp = doc.timestamp;
+    let notes = doc.notes;
+    let value= doc.content;
     this.state = { db, id, rev, notes, timestamp, tags, value, deleted: false };
   }
   annotations() {
@@ -28,15 +33,16 @@ class Message extends React.Component {
   }
   render() {
     if (this.state.deleted) { return null; }
+    const db = this.state.db;
+    const key = this.state.rev;
+    const id = this.state.id;
     return (
       <div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y">
         <div className="message left">
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            alert('not implemented!')
-            console.log(this.state.db, this.state.id, this.state.key)
-            // this.state.db.remove(this.state.id, this.state.key);
+            this.state.db.remove(id, key);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()
