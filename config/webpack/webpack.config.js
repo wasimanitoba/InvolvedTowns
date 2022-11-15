@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     application: "./app/javascript/application.js",
     chat: "./app/javascript/packs/chat.jsx",
-    library: "./app/javascript/packs/library.jsx"
+    library: "./app/javascript/packs/list.jsx"
   },
   module: {
     rules: [
