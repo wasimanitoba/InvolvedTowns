@@ -105,7 +105,7 @@ class List extends React.Component {
           /> */}
         </filter-input>
         <ul id="entries" data-filter-list>
-          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry._id} rev={entry._rev} /> })}
+          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry.id} /> })}
         </ul>
       </div>
     );
