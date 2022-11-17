@@ -6,6 +6,8 @@ import '@github/filter-input-element';
 import { MenuItem, Icon } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
+const db = new PouchDB('stackbiblio-development');
+const tagDB = new PouchDB('tag-store-development');
 const renderSelection = (selectedItem, { handleClick, handleFocus, modifiers, query }) => {
   if (!modifiers.matchesPredicate) {
     return null;
@@ -33,26 +35,33 @@ class List extends React.Component {
     this.setSelectedTag = this.setSelectedTag.bind(this);
     this.setSelectedEntries = this.setSelectedEntries.bind(this);
     this.clearTags = this.clearTags.bind(this);
-    const db = new PouchDB('stackbiblio-development');
-    const tagDB = new PouchDB('tag-store-development');
 
-    this.state = { db, tagDB, notes: [], entries: [], tags: [], selectedTags: [] };
+    this.state = { notes: [], entries: [], tags: [], selectedTags: [] };
   }
 
   async componentDidMount() {
-    const notes = await this.getAllNotes();
-    const tags = await this.getAllTags();
-    this.setState({ entries: notes.rows, tags: tags.rows || [] });
+    const notes   = await this.getAllNotes();
+    console.log("unsorted", notes.rows)
+    const entries = notes.rows.sort((first, second)=> {
+      if (second.doc.timestamp < first.doc.timestamp) { return -1; }
+      else if (second.doc.timestamp > first.doc.timestamp) { return 1; }
+      return 0;
+     });
+    console.log("sorted", entries)
+    let tags      = await this.getAllTags();
+    tags          = tags.rows || [];
+
+    this.setState({ entries, tags });
     this.render()
   }
 
-  async getAllTags() { return await this.state.tagDB.allDocs({ include_docs: true, descending: true }); }
+  async getAllTags() { return await tagDB.allDocs({ include_docs: true, descending: true }); }
 
-  async getAllNotes() { return await this.state.db.allDocs({ include_docs: true, descending: true }); }
+  async getAllNotes() { return await db.allDocs({ include_docs: true, descending: true }); }
 
   // TODO: use an API token instead or set up CORS so that the password can only be used by StackBiblio.com
   // TODO: ensure that we can use host URL instead of `localhost`
-  async sync() { this.state.db.replicate.to('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development'); }
+  async sync() { db.replicate.to('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development'); }
 
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
@@ -105,7 +114,7 @@ class List extends React.Component {
           /> */}
         </filter-input>
         <ul id="entries" data-filter-list>
-          {this.state.entries.map((entry) => { return <ListEntry entry={entry} key={entry.id} /> })}
+          {this.state.entries.map((entry) => { return <ListEntry entry={entry.doc} /> })}
         </ul>
       </div>
     );
@@ -115,21 +124,19 @@ class List extends React.Component {
 class ListEntry extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      content: props.entry.doc.content,
-      tags: props.entry.doc.tags || []
-    };
+    let { content, _rev, _id, tags } = props.entry;
+    this.state = { _rev, _id, content, tags: tags || [] };
   }
   render() {
-    const db = this.state.db;
-    const key = this.state.key;
-    const id = this.state.id;
+    if (this.state.deleted === true) { return ''; }
+
+    const _rev = this.state._rev;
+    const _id = this.state._id;
     return (
       <li>
         <form onSubmit={(event) => {
           event.preventDefault();
-          console.log({id, key});
-          this.state.db.remove(id, key);
+          db.remove(_id, _rev);
           // let's add a confirmation modal here
           this.setState({ deleted: true })
           this.render()
@@ -137,6 +144,7 @@ class ListEntry extends React.Component {
           <ReactMarkdown>{this.state.content}</ReactMarkdown>
           <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>
         </form>
+        <hr />
         {/* <sub hidden><sup>{this.state.tags.map((tag) => { return `${tag.title} ${tag.category}` })}</sup></sub> */}
       </li>
     )
