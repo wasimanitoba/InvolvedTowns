@@ -2,8 +2,8 @@
 <div class="flex justify-apart">
   <span class="flex">
     <a class="button-like" href="/">TownHalls</a>
-     <%= link_to('Stack', '/stack', class: "button-like") %>
      <%= link_to('Library', Rails.application.routes.url_helpers.library_path, class: "button-like") %>
+     <%= link_to('Stack', '/stack', class: "button-like") %>
     <%- if current_user&.admin %>
        <%= link_to 'Admin', Rails.application.routes.url_helpers.admin_path, class: "button-like" %>
     <%- end %>

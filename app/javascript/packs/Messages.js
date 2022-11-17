@@ -7,7 +7,6 @@ const Messages = (props) => {
     return <Message db={props.db} tags={doc.tags || []} doc={doc} />
   }));
 
-  messages.reverse();
   return messages;
 }
 
@@ -15,12 +14,14 @@ class Message extends React.Component {
   constructor(props) {
     super(props);
     let { db, tags, doc } = props;
+    let className = doc.className;
     let id = doc._id;
     let rev = doc._rev;
+    let key = doc.key;
     let timestamp = doc.timestamp;
     let notes = doc.notes;
-    let value= doc.content;
-    this.state = { db, id, rev, notes, timestamp, tags, value, deleted: false };
+    let value = doc.content;
+    this.state = { className, db, id, rev, notes, timestamp, tags, value, deleted: false };
   }
   annotations() {
     if (!this.state.notes) { return null; }
@@ -32,17 +33,17 @@ class Message extends React.Component {
     )
   }
   render() {
-    if (this.state.deleted) { return null; }
+    if (this.state.deleted === true) { return null; }
     const db = this.state.db;
-    const key = this.state.rev;
+    const rev = this.state.rev;
     const id = this.state.id;
     return (
-      <div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y">
+      <div key={this.state.key} className={this.state.className || 'message'}>
         <div className="message left">
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            this.state.db.remove(id, key);
+            db.remove(id, rev);
             // let's add a confirmation modal here
             this.setState({ deleted: true })
             this.render()
@@ -67,7 +68,8 @@ class Message extends React.Component {
               </details>
             </div>
             <ReactMarkdown>{this.state.value}</ReactMarkdown>
-          </form>          <div className="tags">{
+          </form>
+          <div className="tags">{
 
             this.state.tags.map((tag) => {
               return (

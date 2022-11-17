@@ -2,9 +2,11 @@ import PouchDB from 'pouchdb';
 import React from "react";
 import ReactDOM from 'react-dom/client';
 import Messages from "./Messages";
-import { Icon, MenuItem, TextArea } from "@blueprintjs/core";
+import { Icon, MenuItem } from "@blueprintjs/core";
 import { MultiSelect2 } from "@blueprintjs/select";
 
+const db     = new PouchDB('stackbiblio-development');
+const tagDB  = new PouchDB('tag-store-development');
 
 const renderCreateNewMenuItem = (query, active, handleClick) => (
   <MenuItem
@@ -22,29 +24,42 @@ class Chat extends React.Component {
     super(props);
     const { tags, tagsFilter } = props;
 
-    const db             = new PouchDB('stackbiblio-development');
-    const tagDB          = new PouchDB('tag-store-development');
-
-    this.handleChange    = this.handleChange.bind(this);
+    // this.handleChange    = this.handleChange.bind(this);
     this.handleSubmit    = this.handleSubmit.bind(this);
     this.setSelectedTag  = this.setSelectedTag.bind(this);
     this.renderSelection = this.renderSelection.bind(this);
 
-    this.state = { db, tagDB, entries: [], currentValue: '', selectedTags: [], tags: [], allTags: tags, tagsFilter };
+    this.state = { entries: [], currentValue: '', selectedTags: [], tags: [], allTags: tags, tagsFilter };
   }
 
   async componentDidMount() {
     const doc     = await this.getAllNotes();
     const tags    = await this.getAllTags();
-    console.log({doc, tags});
+
     const entries = doc.rows.map((row)=>{ return row.doc });
+
+
+    entries.sort((first, second)=> {
+      if (first.timestamp < second.timestamp) { return -1; }
+      else if (first.timestamp > second.timestamp) { return 1; }
+      return 0;
+     });
+
+    entries[entries.length - 1].className = 'last-message';
+
     this.setState({ entries, tags: tags.rows || [] });
+
+    window.requestAnimationFrame(()=>{
+      let lastMessage = document.querySelectorAll('.last-message');
+      if (lastMessage.length > 0) { lastMessage[lastMessage.length - 1].scrollIntoView();  }
+    })
+
     this.render();
   }
 
-  async getAllTags() { return await this.state.tagDB.allDocs({include_docs: true, descending: true}); }
+  async getAllTags() { return await tagDB.allDocs({include_docs: true, descending: true}); }
 
-  async getAllNotes() { return await this.state.db.allDocs({ include_docs: true, descending: true }); }
+  async getAllNotes() { return await db.allDocs({ include_docs: true, descending: true }); }
 
   tagsFilter(query, tag, _index, exactMatch) {
     const normalizedTitle = tag.title.toLowerCase();
@@ -91,79 +106,85 @@ class Chat extends React.Component {
   }
   clearTags() { this.setState({ selectedTags: [] }); this.render(); }
 
-  // Update the state with every keystroke
-  handleChange(event) {
-    this.setState({ currentValue: event.target.value });
-  }
-
-  setSelectedTag = (userSelectedTag) => {
-    const selectedTags = this.state.selectedTags;
-    const existingTitles = selectedTags.map((entry) => { return entry.title; })
-
-    if (!existingTitles.includes(userSelectedTag.title)) {
-      selectedTags.push(userSelectedTag);
-      let tags = this.state.allTags;
-      this.setState({ selectedTags: selectedTags, tags: tags });
-    }
-    this.render();
-  }
-
   // Add the new message to database, update the current state, clear the input and re-render
   async handleSubmit(event) {
+    // If I use controlled component values, the UI becomes laggy and every keystroke is delayed.
+
     event.preventDefault();
-    await this.addItemToDb().then((newMessage) => {
-      const newMessageArray = this.state.entries;
+    let currentMessageValue = event.target.querySelector('textarea').value;
+    const self = this;
+    await self.addItemToDb(currentMessageValue).then((newMessage) => {
+
+      // get the list of messages
+      const newMessageArray = self.state.entries;
+
+      // add the new message
       newMessageArray.push(newMessage);
-      this.setState({
-        currentValue: '',
+
+      // reset the input field
+      event.target.querySelector('textarea').value = '';
+
+      newMessageArray.sort((first, second)=> {
+        if (first.timestamp < second.timestamp) { return -1; }
+        else if (first.timestamp > second.timestamp) { return 1; }
+        return 0;
+       });
+
+      // update state
+      self.setState({
+        // currentValue: '',
         entries: newMessageArray,
         selectedTags: [],
-        tags: this.state.allTags
+        tags: self.state.allTags
       });
-      this.render();
+
+      window.requestAnimationFrame(()=>{
+        let lastMessage = document.querySelectorAll('.last-message');
+        if (lastMessage.length > 0) { lastMessage[lastMessage.length - 1].scrollIntoView();  }
+      })
+
+      self.render();
     });
   }
 
   /**
-   * Checks the input for a value, adds the value to the database and returns it.
+   * Adds the input value to the database and returns it.
    * @returns Object - the message which has just been added to the database.
-   */
-  async addItemToDb() {
+  */
+  async addItemToDb(content) {
     const timestamp  = new Date();
     const key        = `chatID-${timestamp.valueOf()}`;
-    const content    = this.state.currentValue;
     const tags       = this.state.selectedTags;
-    const newMessage = { content, tags, timestamp, _id: key, key };
+    const bigNumber  = Math.floor(Math.random() * 10000000000000);
+    const newMessage = { content, tags, timestamp, _id: key, key, id: bigNumber };
 
-    await this.state.db.put(newMessage);
+    await db.put(newMessage);
 
     return newMessage;
   }
 
   render() {
-    const handleInputRef = (el) => (this.inputEl = el);
-
-    const entries = this.state.entries;
-
+    const entries = this.state.entries.sort((first, second)=> { first.timestamp - second.timestamp});
     return (
       <details className={'chat-toggle'}>
-      <summary><Icon icon={'chat'} size={40} intent={'primary'} /><span className={''}><h2 className={'auto-margin'}>Note Stack</h2></span></summary>
+`      <summary>
+        <Icon icon={'chat'} size={40} intent={'primary'} />
+        <span>
+          <h2 className={'auto-margin'}>Note Stack</h2>
+        </span>
+      </summary>
 
       <div className="chat">
         <div className="messages">
           <div id="messages-content" className="messages-content">
-            <Messages db={this.state.db} entries={entries || []} tags={[]} />
+            {/* the most recent entry has no _rev value...that shouldn't matter. why does it? workaround? TODO */}
+            <Messages db={db} entries={entries || []} tags={[]} />
           </div>
         </div>
         <div className="chat-tags message-box">
-          <form onSubmit={this.handleSubmit} >
+          <form onSubmit={this.handleSubmit}>
             <div className="flex message-input">
-              <TextArea
-                onChange={this.handleChange}
-                placeholder="Send yourself a note..."
-                ref={handleInputRef}
-                value={this.state.currentValue}
-              />
+              <textarea placeholder='Send yourself a note' cols="30" rows="10"></textarea>
               <button type="submit" className="message-submit">Send</button>
             </div>
           </form>
@@ -192,7 +213,7 @@ class Chat extends React.Component {
             tagRenderer={(item) => { return item.title; }}
           />
         </div>
-      </div>
+      </div>`
     </details>
     )
   }
@@ -200,11 +221,10 @@ class Chat extends React.Component {
 
 
 const rootElement = document.getElementById('react-chat-container');
-if (!rootElement) {
+
+if (rootElement) { ReactDOM.createRoot(rootElement).render(<Chat />); }
+else {
   document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.createRoot(document.getElementById('react-chat-container')).render(<Chat />);
   });
-}
-else {
-  ReactDOM.createRoot(rootElement).render(<Chat />);
 }
