@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   end
 
   get '/messaging', to: 'stack#messaging', as: :messages
-  get '/me', to: 'users#me', as: :me
   get '/about', to: 'home#index'
+  get '/me', to: 'users#me', as: :me
   root to: redirect('/home')
 end

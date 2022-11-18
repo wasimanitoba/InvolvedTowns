@@ -59,3 +59,4 @@ gem 'view_component'
 gem 'cancancan'
 
 gem 'jsbundling-rails', '~> 1.0'
+gem 'turbo-rails'

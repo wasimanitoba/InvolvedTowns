@@ -41,13 +41,11 @@ class List extends React.Component {
 
   async componentDidMount() {
     const notes   = await this.getAllNotes();
-    console.log("unsorted", notes.rows)
     const entries = notes.rows.sort((first, second)=> {
       if (second.doc.timestamp < first.doc.timestamp) { return -1; }
       else if (second.doc.timestamp > first.doc.timestamp) { return 1; }
       return 0;
      });
-    console.log("sorted", entries)
     let tags      = await this.getAllTags();
     tags          = tags.rows || [];
 

@@ -23,7 +23,16 @@
   <body>
     <%= render('layouts/partials/navbar') %>
     <%= yield %>
-    <%= javascript_include_tag('chat') %>     <%# This has to be in the body instead of the head? %>
-    <div id="react-chat-container"></div>
+    <%= turbo_frame_tag('turbo-chat') do %>
+      <a href="/messaging">
+        <details class='chat-toggle'>
+          <summary>
+            <span>
+              <h2 class='auto-margin'>Note Stack</h2>
+            </span>
+          </summary>
+        </details>
+      </a>
+    <%- end %>
   </body>
 </html>
