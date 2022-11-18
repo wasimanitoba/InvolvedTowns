@@ -24,6 +24,11 @@
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
+
+  <div class="field hidden-none-display">
+    <%= check_box_tag :browser, 'browser', @browser %>
+    <%= label_tag :app %>
+  </div>
 <% end %>
 
 <%= render "devise/shared/links" %>

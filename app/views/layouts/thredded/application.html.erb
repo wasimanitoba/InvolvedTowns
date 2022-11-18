@@ -20,10 +20,19 @@
     <%= RailsGravatar.prefetch_dns_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
-  <body>
+  <body class="thredded-outer-body" data-controller="annotation">
     <%= render('layouts/partials/navbar') %>
     <%= yield %>
     <%= javascript_include_tag('chat') %>     <%# This has to be in the body instead of the head? %>
     <div id="react-chat-container"></div>
+    <div class="hidden-none-display">
+      <%= form_tag('/notes', remote: true, data: { 'annotation-target': 'form' }) do %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <%= text_field(:note, :user_id, value: current_user&.id) %>
+        <%= text_field(:note, :title, value: 'Annotation') %>
+        <%= text_field(:note, :tags, data: { 'annotation-target': 'tags'}) %>
+        <%= text_field(:note, :content, data: { 'annotation-target': 'annotationPayload' }) %>
+      <% end %>
+    </div>
   </body>
 </html>

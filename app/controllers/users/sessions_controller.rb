@@ -13,11 +13,9 @@ module Users
 
     # POST /resource/sign_in
     def create
-      if params[:browser]
-        redirect_to('https://0417c160d5a4b5b90b292ad98482c9856d1d2018.extensions.allizom.org/', allow_other_host: true)
-      elsif params[:browser].blank? || [false, ''].include?(params[:browser])
-        super
-      end
+      redirect_to('https://0417c160d5a4b5b90b292ad98482c9856d1d2018.extensions.allizom.org/', allow_other_host: true) if params[:browser]
+
+      super
     end
 
     # DELETE /resource/sign_out

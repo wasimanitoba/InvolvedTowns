@@ -2,6 +2,9 @@
 
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
+  resources :notes do
+    resources :tags
+  end
   mount Thredded::Engine => '/home'
 
   get '/admin', to: 'admin#index'
@@ -12,6 +15,10 @@ Rails.application.routes.draw do
     resources :users do
       resources :tags, :collections, :bookmarks, :reminders, :notes, :posts
     end
+  end
+
+  resources :tags do
+    resources :notes
   end
 
   resources :users do
