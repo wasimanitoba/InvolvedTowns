@@ -24,7 +24,6 @@ class Chat extends React.Component {
     super(props);
     const { tags, tagsFilter } = props;
 
-    // this.handleChange    = this.handleChange.bind(this);
     this.handleSubmit    = this.handleSubmit.bind(this);
     this.setSelectedTag  = this.setSelectedTag.bind(this);
     this.renderSelection = this.renderSelection.bind(this);
@@ -47,6 +46,17 @@ class Chat extends React.Component {
 
     entries[entries.length - 1].className = 'last-message';
 
+    let lastMessage;
+    if (entries.length > 0 ) {
+      // the return of long-polling! is this necessary, now that i'm displaying the entire panel on load via turbo?
+      var messagePresenceCheck = setInterval(()=>{
+        lastMessage = document.querySelectorAll('.last-message');
+        if (lastMessage.length !== 0) {
+          clearInterval(messagePresenceCheck);
+          window.requestAnimationFrame(()=>{ lastMessage[0].scrollIntoView(); })
+        }
+      }, 300);
+    }
     this.setState({ entries, tags: tags.rows || [] });
 
     window.requestAnimationFrame(()=>{
@@ -130,6 +140,8 @@ class Chat extends React.Component {
         return 0;
        });
 
+      newMessageArray[newMessageArray.length - 1].className = 'last-message';
+
       // update state
       self.setState({
         // currentValue: '',
@@ -138,10 +150,13 @@ class Chat extends React.Component {
         tags: self.state.allTags
       });
 
-      window.requestAnimationFrame(()=>{
-        let lastMessage = document.querySelectorAll('.last-message');
-        if (lastMessage.length > 0) { lastMessage[lastMessage.length - 1].scrollIntoView();  }
-      })
+      var messagePresenceCheck = setInterval(()=>{
+        var lastMessage = document.querySelectorAll('.last-message');
+        if (lastMessage.length !== 0) {
+          clearInterval(messagePresenceCheck);
+          window.requestAnimationFrame(()=>{ lastMessage[0].scrollIntoView(); })
+        }
+      }, 300);
 
       self.render();
     });
@@ -153,10 +168,11 @@ class Chat extends React.Component {
   */
   async addItemToDb(content) {
     const timestamp  = new Date();
-    const key        = `chatID-${timestamp.valueOf()}`;
     const tags       = this.state.selectedTags;
-    const bigNumber  = Math.floor(Math.random() * 10000000000000);
-    const newMessage = { content, tags, timestamp, _id: key, key, id: bigNumber };
+    const bigNumber  = timestamp.valueOf();
+    const key        = `chatID-${bigNumber}`;
+    // this is so duplicative, fix this
+    const newMessage = { content, tags, timestamp, _id: key, key, id: key };
 
     await db.put(newMessage);
 
@@ -166,7 +182,7 @@ class Chat extends React.Component {
   render() {
     const entries = this.state.entries.sort((first, second)=> { first.timestamp - second.timestamp});
     return (
-      <details className={'chat-toggle'}>
+      <details open className={'chat-toggle'}>
 `      <summary>
         <Icon icon={'chat'} size={40} intent={'primary'} />
         <span>

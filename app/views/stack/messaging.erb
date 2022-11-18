@@ -1,2 +1,4 @@
-<%= javascript_include_tag('chat') %>     <%# This has to be in the body instead of the head? %>
-<div id="react-chat-container"></div>
+<%= turbo_frame_tag('turbo-chat') do %>
+  <%= javascript_include_tag('chat') %>     <%# This has to be in the body instead of the head? %>
+  <div id="react-chat-container"></div>
+<%- end %>
