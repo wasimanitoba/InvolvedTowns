@@ -22,7 +22,7 @@
       <%= subject_subform.label :new_related_tag %>
       <%= subject_subform.text_field :new_related_tag %>
       <%= subject_subform.label :existing_related_tag %>
-      <%= subject_subform.select :existing_related_tag, current_user.tags, {}, multiple: true %>
+      <%= subject_subform.select :existing_related_tag, current_user.tags, {}, { multiple: true } %>
     </div>
 
   <%- end %>

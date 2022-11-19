@@ -11,13 +11,14 @@ RSpec.describe 'tags/new', type: :view do
     sign_in user
   end
 
-  pending 'renders new tag form' do
+  it 'renders new tag form' do
     render
 
     assert_select 'form[action=?][method=?]', user_tags_path(user_id: tag.user_id), 'post' do
       assert_select 'input[name=?]', 'tag[title]'
 
-      assert_select 'input[name=?]', 'tag[tag_id]'
+      assert_select 'input[name=?]', 'tag[object_links][new_related_tag]'
+      assert_select 'select[name=?]', 'tag[object_links][existing_related_tag][]'
 
       assert_select 'input[name=?]', 'tag[user_id]'
     end

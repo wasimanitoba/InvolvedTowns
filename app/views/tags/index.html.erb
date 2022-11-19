@@ -24,4 +24,6 @@
 
 <br>
 
-<%= link_to 'New Tag', new_user_tag_path(user_id: current_user) %>
+<%- if current_user %>
+  <%= link_to 'New Tag', new_user_tag_path(user_id: current_user) %>
+<%- end %>
