@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   scope('/stack') do
     get '/import', to: 'stack#import', as: :notes_import
-    post '/import', to: 'bookmarks#bulk_upload'
+    post '/import', to: 'bookmarks#bulk_upload', as: :bookmarks_import
     get '/list', to: 'stack#list', as: :offline_note_list
     get '/sync', to: 'stack#sync', as: :sync_library
     get '/', to: 'stack#index'

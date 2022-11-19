@@ -17,7 +17,7 @@ class Admin::BookmarksController < ApplicationController
   end
 
   def bulk_upload
-    sites = remote_link_params[:bulk_website_list].split(/\n|,/)
+    sites = remote_link_params[:websites].split(/\n|,/)
 
     successfully_saved_all_links = sites.all? do |site|
       @bookmark = Bookmark.create(url: site, user_id: current_user.id)
@@ -89,6 +89,6 @@ class Admin::BookmarksController < ApplicationController
 
     # for remote forms
     def remote_link_params
-      params.require(:bookmark).permit(:url, :title, :user_id, :bulk_website_list)
+      params.require(:bookmark).permit(:url, :title, :user_id, :websites)
     end
 end

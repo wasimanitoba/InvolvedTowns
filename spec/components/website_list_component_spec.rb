@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe WebsiteListComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject { Capybara.string(component).find('input#websites', visible: :all)['data-submission-target'] }
 
-  # it "renders something useful" do
-  #   expect(
-  #     render_inline(described_class.new(attr: "value")) { "Hello, components!" }.css("p").to_html
-  #   ).to include(
-  #     "Hello, components!"
-  #   )
-  # end
+  let(:component) { render_inline(described_class.new(submit_button: false)) }
+
+  it { is_expected.to eq('websiteList') }
+
+  context 'with the hidden input' do
+    let(:component) { render_inline(described_class.new(submit_button: true)) }
+
+    it { is_expected.to eq('websiteList') }
+  end
 end

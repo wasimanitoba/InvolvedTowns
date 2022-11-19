@@ -23,11 +23,23 @@
 class Bookmark < ApplicationRecord
   validates :url, uniqueness: { scope: :user_id }
   validates :url, presence: true
+  validate :check_url_format, on: :create
+
+  def check_url_format
+    clean_url
+
+    errors.add(:url, 'Must have no empty spaces.') if self.url.match(/\s/)
+    errors.add(:url, 'Must be in format `website.com`') unless self.url.match(/[\S]+\.[\S]+/)
+  end
 
   belongs_to :user
 
   has_many :bookmarks_notes, dependent: :destroy
   has_many :notes, through: :bookmarks_notes, dependent: :restrict_with_exception
+
+  def clean_url
+    self.url = url.strip.gsub(%r{http://|https://}, '').gsub('www.', '')
+  end
 
   def to_s
     "#{title.present? ? "#{title}:" : ''}#{url}"

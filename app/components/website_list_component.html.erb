@@ -1,30 +1,28 @@
-<% if submit_button == true %>
-  <%= form_for :bookmark, remote: true do |f| %>
-    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-    <div data-controller="submission">
+<div data-controller="submission">
+  <% if submit_button == true %>
+    <%= form_for :bookmark, remote: true, url: bookmarks_import_path do |f| %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <div class="flex">
         <span class="button-like" data-action="click->submission#addSourceLink">Add</span>
         <textarea
-        data-submission-target="sourceToAdd"
-        placeholder=<%= placeholder_text %>
-        autocomplete='off'></textarea>
+          data-submission-target="sourceToAdd"
+          placeholder="<%= placeholder_text %>"
+          autocomplete='off'>
+        </textarea>
       </div>
       <ul id='sources-list' data-submission-target='sourcesList'></ul>
-      <%= f.text_field :bulk_website_list, data: { 'submission-target': 'websiteList' }, class: 'hidden-none-display' %>
+      <input id="websites" type="hidden" name="bookmark[websites]" data-submission-target="websiteList">
       <%= f.submit %>
-    </div>
-  <% end %>
-<% else %>
-  <div data-controller="submission">
+    <% end %>
+  <% else %>
     <div class="flex">
       <span class="button-like" data-action="click->submission#addSourceLink">Add</span>
       <input
         data-submission-target="sourceToAdd"
-        placeholder=<%= placeholder_text %>
+        placeholder="<%= placeholder_text %>"
         autocomplete='off'>
-    </div>
-    <ul id='sources-list' data-submission-target='sourcesList'></ul>
-    <div class='hidden-none-display'>
-      <%= text_field :bulk_website_list, data: { 'submission-target': 'websiteList' } %>
-    </div>
-  <% end %>
+      </div>
+      <ul id='sources-list' data-submission-target='sourcesList'></ul>
+      <input id="websites" type="hidden" name="bookmark[websites]" data-submission-target="websiteList">
+    <% end %>
+  </div>

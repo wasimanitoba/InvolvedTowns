@@ -6,11 +6,11 @@ export default class extends Controller {
 
   connect() {
     this.db    = new PouchDB('stackbiblio-development');
-    this.tagDB = new PouchDB('tag-store-development');  
+    this.tagDB = new PouchDB('tag-store-development');
   }
 
   /**
-   * @param {*} event 
+   * @param {*} event
    */
   async exportPostFromForumToDB(event) {
     event.preventDefault();
@@ -22,19 +22,19 @@ export default class extends Controller {
                          .split(',')
                          .map((tag)=>    { return { title: tag.trim(), category: '' }  })
                          .filter((tag)=> { return tag.title !== '';                    });
-                     
+
     const noteText = form.querySelector('textarea').value;
     if (noteText !== '') { post.notes = noteText; }
-    
+
     if (post.tags) { post.tags.concat(tags);}
     else           { post.tags = tags; }
-    
-    
+
+
     // We check for an existing note with the same user, messageboard and post ID
     // In the future, we can also check for the hash of the content to identify duplicates?
     post._id = `${post.user_id}-${post.messageboard_id}-${post.id}`;
     this.db.put(post).then((result)=>{
-      console.log('added post', result);
+      console.log('added post to stack', result);
     })
 
 

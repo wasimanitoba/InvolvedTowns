@@ -57,6 +57,7 @@ gem 'stimulus-rails'
 gem 'view_component'
 
 gem 'cancancan'
+gem 'capybara'
 
 gem 'jsbundling-rails', '~> 1.0'
 gem 'turbo-rails'

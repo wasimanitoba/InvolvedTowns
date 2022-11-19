@@ -13,6 +13,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
   <body class=<%= @page_name || 'default_page_type' %>>
+    <p id="notice"><%= notice %></p>
     <%= render('layouts/partials/navbar') %>
     <%= yield %>
     <%= turbo_frame_tag('turbo-chat') do %>

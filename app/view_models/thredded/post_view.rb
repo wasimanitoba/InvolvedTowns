@@ -24,11 +24,11 @@ module Thredded
     # @param first_in_page [Boolean]
     # @param first_unread_in_page [Boolean]
     def initialize(post, policy, topic_view: nil, first_in_page: false, first_unread_in_page: false)
-      @post   = post
-      @policy = policy
-      @topic_view = topic_view
+      @post                 = post
+      @policy               = policy
+      @topic_view           = topic_view
       @first_unread_in_page = first_unread_in_page
-      @first_in_page = first_in_page
+      @first_in_page        = first_in_page
     end
 
     def can_reply?

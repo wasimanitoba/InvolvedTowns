@@ -5,5 +5,5 @@
     <%= link_to 'To sync your notes, create an account!', new_user_registration_path %>
  <%- end %>
   <%= link_to 'Offline Note List', offline_note_list_path %>
-  <%= link_to 'Import', notes_import_path %>
+  <%= link_to 'Import', notes_import_path, title: 'This uploads to library. Not stored locally on stack.' %>
 </div>

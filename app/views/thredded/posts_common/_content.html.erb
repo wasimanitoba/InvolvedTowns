@@ -1,6 +1,6 @@
 <div class="thredded--post--content">
   <%= post.filtered_content(self, **(local_assigns[:options] || {})) %>
-  <%- post.bulk_website_list.each do |website| %>
+  <%- post.websites.each do |website| %>
     <p><%= link_to(website, "//#{website}") %></p>
   <%- end %>
 </div>
