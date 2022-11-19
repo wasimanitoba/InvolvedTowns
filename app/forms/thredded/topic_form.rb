@@ -50,11 +50,7 @@ module Thredded
     end
 
     def post
-      @post ||= topic.posts.build(
-        content: content,
-        user: non_null_user,
-        messageboard: messageboard
-      )
+      @post ||= topic.posts.build(content: content, user: non_null_user, messageboard: messageboard)
     end
 
     def submit_path

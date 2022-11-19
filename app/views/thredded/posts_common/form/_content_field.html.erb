@@ -3,5 +3,5 @@
       <%= render 'thredded/posts_common/form/before_content', form: form %>
       <%= form.text_area :content, {rows: 5, required: true, autofocus: !!params[:autofocus_new_post_content]} %>
       <%= render 'thredded/posts_common/form/after_content', form: form %>
-      <%= render WebsiteListComponent.new(placeholder: 'Cite your sources (recommended, but optional)') %>
+      <%= render WebsiteListComponent.new(model: :post, placeholder: 'Cite your sources (recommended, but optional)') %>
   <% end %>

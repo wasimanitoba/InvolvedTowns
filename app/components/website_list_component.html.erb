@@ -11,7 +11,7 @@
         </textarea>
       </div>
       <ul id='sources-list' data-submission-target='sourcesList'></ul>
-      <input id="websites" type="hidden" name="bookmark[websites]" data-submission-target="websiteList">
+      <input id="websites" type="hidden" name="<%= wlc_form_model =%>[websites]" data-submission-target="websiteList">
       <%= f.submit %>
     <% end %>
   <% else %>
@@ -23,6 +23,6 @@
         autocomplete='off'>
       </div>
       <ul id='sources-list' data-submission-target='sourcesList'></ul>
-      <input id="websites" type="hidden" name="bookmark[websites]" data-submission-target="websiteList">
+      <input id="websites" type="hidden" name="<%= wlc_form_model =%>[websites]" data-submission-target="websiteList">
     <% end %>
   </div>

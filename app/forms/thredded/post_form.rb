@@ -25,6 +25,7 @@ module Thredded
       attribute_hash         = { user: (user unless user.thredded_anonymous?), messageboard: topic.messageboard }
       post_params[:websites] = post_params[:websites].split(',') if post_params[:websites]
       @post.attributes       = post_params.merge(attribute_hash)
+      binding.pry
     end
 
     def self.for_persisted(post)
