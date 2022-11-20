@@ -1,5 +1,7 @@
 # About
 
+[![Ruby on Rails CI](https://github.com/wasimanitoba/InvolvedTowns/actions/workflows/rubyonrails.yml/badge.svg?branch=master)](https://github.com/wasimanitoba/InvolvedTowns/actions/workflows/rubyonrails.yml)
+
 **What is InvolvedTowns**?
 
 A link-sharing discussion forum with local-first personal note libraries for research groups.
