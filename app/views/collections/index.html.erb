@@ -18,7 +18,7 @@
         <td><%= collection.user_id %></td>
         <td><%= link_to 'Show', user_collection_path(collection) %></td>
         <td><%= link_to 'Edit', edit_user_collection_path(collection) %></td>
-        <td><%= link_to 'Destroy', user_collection_path(collection), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', user_collection_path(collection), method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } }, class: "btn btn-danger"  %></td>
       </tr>
     <% end %>
   </tbody>

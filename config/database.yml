@@ -20,11 +20,11 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("DB_USERNAME") { 'wasim' } %>
+  username: <%= ENV.fetch("DB_USERNAME") { 'USERNAME' } %>
   host: localhost
 
   # The password associated with the postgres role (username).
-  password: <%= ENV.fetch("DB_PASSWORD") { 'wayfairer14' } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { 'PASSWORD' } %>
 
 development:
   <<: *default

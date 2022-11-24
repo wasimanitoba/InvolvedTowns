@@ -20,7 +20,7 @@
         <td><%= note.content %></td>
         <td><%= link_to 'Show', user_note_path(id: note.id, user_id: note.user_id) %></td>
         <td><%= link_to 'Edit', edit_user_note_path(id: note.id, user_id: note.user_id) %></td>
-        <td><%= link_to 'Destroy', user_note_path(id: note.id, user_id: note.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', user_note_path(id: note.id, user_id: note.user_id), method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } }, class: "btn btn-danger"  %></td>
       </tr>
     <% end %>
   </tbody>

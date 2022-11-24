@@ -30,18 +30,14 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-end
-
 group :development do
+  gem 'listen', '~> 3.2'
   gem 'pry-byebug'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'listen', '~> 3.2'
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'annotate'
+  gem 'rack-mini-profiler', '~> 3.0'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
@@ -53,12 +49,12 @@ gem 'rubocop-rails', '~> 2.16'
 gem 'thredded', '~> 1.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-# gem "rack-mini-profiler", "~> 3.0"
 gem 'stimulus-rails'
 gem 'view_component'
 
 gem 'cancancan'
 gem 'capybara'
 
+gem 'httpparty'
 gem 'jsbundling-rails', '~> 1.0'
 gem 'turbo-rails'

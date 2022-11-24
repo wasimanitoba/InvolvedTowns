@@ -21,7 +21,7 @@ class BookmarksController < ApplicationController
 
     successfully_saved_all_links = sites.all? do |site|
       @bookmark = Bookmark.create(url: site, user_id: current_user.id)
-      @bookmark.save
+      @bookmark.save_with_constraints
     end
     respond_to do |format|
       if successfully_saved_all_links
@@ -42,7 +42,7 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.new(bookmark_params)
 
     respond_to do |format|
-      if @bookmark.save
+      if @bookmark.save_with_constraints
         format.html { redirect_to bookmark_url(@bookmark), notice: 'Bookmark was successfully created.' }
         format.json { render :show, status: :created, location: @bookmark }
       else

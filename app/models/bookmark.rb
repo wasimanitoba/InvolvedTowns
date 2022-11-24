@@ -21,15 +21,25 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Bookmark < ApplicationRecord
-  validates :url, uniqueness: { scope: :user_id }
-  validates :url, presence: true
+  validates :url, uniqueness: { scope: :user_id }, on: :create
+  validates :url, presence: true, on: :create
   validate :check_url_format, on: :create
 
   def check_url_format
     clean_url
 
-    errors.add(:url, 'Must have no empty spaces.') if self.url.match(/\s/)
-    errors.add(:url, 'Must be in format `website.com`') unless self.url.match(/[\S]+\.[\S]+/)
+    errors.add(:url, 'Must have no empty spaces.') if url.match(/\s/)
+    errors.add(:url, 'Must be in format `website.com`') unless url.match(/\S+\.\S+/)
+  end
+
+  # like a normal save, but also returns false if a constraint failed
+  def save_with_constraints
+    save
+  rescue ValidationRaceCondition
+    # re-run validations to set a user-friendly error mesage for whatever the
+    # validation missed the first time but the constraints caught
+    valid?
+    false
   end
 
   belongs_to :user

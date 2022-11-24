@@ -21,6 +21,6 @@
 #
 class Note < ApplicationRecord
   belongs_to :user
-  has_many :links_notes, dependent: :destroy
-  has_many :links, through: :links_notes, dependent: :destroy
+  has_many :bookmarks_notes, dependent: :destroy
+  has_many :bookmarks, through: :bookmarks_notes, dependent: :destroy
 end

@@ -19,5 +19,5 @@
 #
 class BookmarksNote < ApplicationRecord
   belongs_to :note
-  belongs_to :link
+  belongs_to :bookmark
 end
