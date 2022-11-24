@@ -4,6 +4,7 @@ import PouchDB from 'pouchdb';
 // Connects to data-controller="syncer"
 export default class extends Controller {
   static targets = ['password']
+  static values  = { email: String }
 
   connect() {
     this.db    = new PouchDB('stackbiblio-development');
@@ -11,12 +12,10 @@ export default class extends Controller {
   }
 
   async sync() {
+    let password = prompt('Provide your password to access your account:')
+    if (password === null) { alert('Sorry, cannot access your account without a password.'); return; }
     // TODO: we don't want to hardcode the password or `localhost` here.
-    this.db.sync('http://admin1:correctHorseBatteryStaple@localhost:5984/stackbiblio-development');
-  }
-
-  createAccount() {
-    console.log(this.passwordTarget.value)
+    this.db.sync(`http://${this.emailValue}:${password}@localhost:5984/stackbiblio-development`);
   }
 
   async save() {}

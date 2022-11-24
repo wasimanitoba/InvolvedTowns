@@ -35,6 +35,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  after_create do
+    api = CouchPotato.new({ name: email, password: password, roles: [], type: 'user' })
+    api.put("_users/org.couchdb.user:#{email}")
+  end
+
   validates :name, presence: true
 
   has_many :tags, dependent: :destroy

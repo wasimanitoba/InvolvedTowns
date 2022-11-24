@@ -134,10 +134,11 @@ class ListEntry extends React.Component {
       <li>
         <form onSubmit={(event) => {
           event.preventDefault();
-          db.remove(_id, _rev);
-          // let's add a confirmation modal here
-          this.setState({ deleted: true })
-          this.render()
+          if(window.confirm('Do you really want to delete?')){
+            db.remove(_id, _rev);
+            this.setState({ deleted: true })
+            this.render()
+          }
         }}>
           <ReactMarkdown>{this.state.content}</ReactMarkdown>
           <button type="submit"><Icon icon={'delete'} intent={'danger'} /></button>

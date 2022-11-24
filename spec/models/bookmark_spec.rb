@@ -63,4 +63,33 @@ RSpec.describe Bookmark, type: :model do
 
     it { is_expected.to eq('example.com') }
   end
+
+  describe '#save_with_constraints' do
+    context 'when creating a duplicate' do
+      before do
+        Bookmark.create! user: fake_user, url: fake_url
+        bookmark.save_with_constraints
+      end
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'when creating a duplicate with whitespace' do
+      before do
+        Bookmark.create user: fake_user, url: "     #{fake_url}"
+        bookmark.save_with_constraints
+      end
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'when creating a duplicate with whitespace' do
+      before do
+        Bookmark.create user: fake_user, url: "http://#{fake_url}"
+        bookmark.save_with_constraints
+      end
+
+      it { is_expected.not_to be_valid }
+    end
+  end
 end

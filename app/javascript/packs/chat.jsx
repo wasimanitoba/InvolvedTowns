@@ -188,6 +188,7 @@ class Chat extends React.Component {
         <span>
           <h2 className={'auto-margin'}>Note Stack</h2>
         </span>
+        <span>[x]</span>
       </summary>
 
       <div className="chat">

@@ -16,7 +16,7 @@
         <td><%= User.find(bookmark.user_id).to_s %></td>
         <td><%= link_to 'Show', user_bookmark_path(id: bookmark, user_id: bookmark.user_id) %></td>
         <td><%= link_to 'Edit', edit_user_bookmark_path(id: bookmark, user_id: bookmark.user_id) %></td>
-        <td><%= button_to 'Destroy', user_bookmark_path(id: bookmark, user_id: bookmark.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', user_bookmark_path(id: bookmark, user_id: bookmark.user_id), method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } }, class: "btn btn-danger"  %></td>
       </tr>
     <% end %>
   </tbody>

@@ -12,8 +12,8 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
-  <body class=<%= @page_name || 'default_page_type' %>>
-    <p id="notice"><%= notice %></p>
+  <body class=<%=  @page_name || 'default_page_type' %>>
+    <p id="notice"><%= notice || alert %> </p>
     <%= render('layouts/partials/navbar') %>
     <%= yield %>
     <%= turbo_frame_tag('turbo-chat') do %>

@@ -43,10 +43,11 @@ class Message extends React.Component {
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            db.remove(id, rev);
-            // let's add a confirmation modal here
-            this.setState({ deleted: true })
-            this.render()
+            if(window.confirm('Do you really want to delete?')){
+              db.remove(_id, _rev);
+              this.setState({ deleted: true })
+              this.render()
+            }
           }}>
             <div className="timestamp">
               <p>{new Date(this.state.timestamp).toLocaleString()}</p>
