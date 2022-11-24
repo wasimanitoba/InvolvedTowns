@@ -12,6 +12,8 @@ class CouchPotato
 
   def put(path)
     self.class.put("#{ADMIN_URL}/#{path}", body: payload)
+  rescue Errno::ECONNREFUSED
+    Rails.logger.fatal('Could not connect!')
   end
 
   private
