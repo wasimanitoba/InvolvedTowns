@@ -8,17 +8,17 @@
     <p>Paste URLs</p>
     <%= render WebsiteListComponent.new(placeholder: 'Add Bookmarks', submit_button: true) %>
   </div>
-  <div role="tabpanel" aria-labelledby="tab-two" hidden>
-    <p>Bulk Import Note files</p>
+  <div data-controller="import" role="tabpanel" aria-labelledby="tab-two" hidden>
+    <h1>Import Note files</h1>
     <div class="flex half-half">
-      <div class="left">
-      <h4>JSON</h4>
-        <p>Upload File</p>
-        <p>Copy and Paste</p>
+      <div title="Not yet implemented" class="left">
+        <label>Copy and Paste</label>
+        <textarea disabled data-import-target="text" cols="30" rows="10"></textarea>
+        <button disabled data-action="import#uploadText">Import Notes</button>
       </div>
       <div class="right">
-        <h1>Text Files</h1>
-        <p>Bulk Upload</p>
+        <label>Upload</label>
+        <input type="file" data-import-target="file" accept=".json, .txt" data-action="import#uploadFile">
       </div>
     </div>
   </div>
