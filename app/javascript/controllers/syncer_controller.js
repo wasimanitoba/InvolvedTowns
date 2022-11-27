@@ -1,35 +1,37 @@
 import { Controller } from "@hotwired/stimulus"
 import PouchDB from 'pouchdb';
+import PouchdbAuthentication from 'pouchdb-authentication'
 
 // Connects to data-controller="syncer"
 export default class extends Controller {
   static targets = ['password']
-  static values  = { email: String }
+  static values = { email: String }
 
   connect() {
-    this.db    = new PouchDB('stackbiblio-development');
-    this.tagDB = new PouchDB('tag-store-development');
+    PouchDB.plugin(PouchdbAuthentication)
+    this.db = new PouchDB('stackbiblio-development');
+   }
+
+  // https://terreii.github.io/use-pouchdb/docs/basics/sync
+  getUserDatabaseName() {
+    const prefix = 'userdb-';
+    const encoder = new TextEncoder()
+    const buffy = encoder.encode(this.emailValue)
+    const bytes = Array.from(buffy).map(byte =>
+      byte.toString(16).padStart(2, '0')
+    )
+    return prefix + bytes.join('')
   }
 
   async sync() {
     let password = prompt('Provide your password to access your account:')
     if (password === null) { alert('Sorry, cannot access your account without a password.'); return; }
 
-    this.db.sync(`http://${this.emailValue}:${password}@localhost:5984/${this.getUserDatabaseName(this.emailValue)}`);
-  }
+    const remoteDB = new PouchDB(`http://155.138.130.142:5984/${this.getUserDatabaseName()}`,
+      { auth: { username: this.emailValue, password } })
 
-/** from: https://terreii.github.io/use-pouchdb/docs/basics/sync
- * Get the name of the users remote-database.
- * This function uses browser APIs.
- * @param {string} name     - The username.
- * @param {string} [prefix] - Prefix, can be changed with config [couch_peruser] database_prefix
- */
- getUserDatabaseName(name, prefix = 'userdb-') {
-  const encoder = new TextEncoder()
-  const buffy = encoder.encode(name)
-  const bytes = Array.from(buffy).map(byte =>
-    byte.toString(16).padStart(2, '0')
-  )
-  return prefix + bytes.join('')
-}
+    this.db.sync(remoteDB, {live: true, retry: true}).
+            on('denied', console.log.bind(console)).
+            on('error', console.log.bind(console));
+    }
 }
